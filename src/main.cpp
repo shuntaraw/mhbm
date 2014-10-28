@@ -6,7 +6,6 @@
 #include <omp.h> // omp_set_num_threads()
 #include <boost/filesystem.hpp>
 
-#include "correspondence.h"
 #include "deformation.h"
 #include "mesh.h"
 #include "landmark.h"

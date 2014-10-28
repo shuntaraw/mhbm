@@ -6,7 +6,6 @@
 #include "constant.h"
 
 #include "mesh.h"
-#include "correspondence.h"
 
 namespace hbm {
 
@@ -83,13 +82,6 @@ private:
     CMesh mesh_; // pointer to source mesh
     slib::CMatrix<double> org_pos_; // mx3 matrix of the original 3D coordinates of source mesh
     slib::CSparseMatrix<double> landmark_; // source landmark
-};
-
-enum class TRANSFORMATION {
-    TRANSLATION,
-    RIGID,
-    SIMILARITY,
-    size,
 };
 
 /// deform current mesh by non-rigid ICP method.

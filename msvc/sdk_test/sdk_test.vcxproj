@@ -144,7 +144,7 @@
     <ClCompile Include="..\..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\mhbmlib\mhbmlib.vcxproj">
+    <ProjectReference Include="..\sdk\sdk.vcxproj">
       <Project>{47c6ff75-fd9c-458a-aa7a-30dccc631a17}</Project>
     </ProjectReference>
   </ItemGroup>

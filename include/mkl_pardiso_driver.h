@@ -15,7 +15,7 @@
 #define VC_EXTRALEAN
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
-#include <Windows.h> // GlobalMemoryStatusEx(),GlobalMemoryStatusEx(),Get/SetEnvironmentVariable()
+#include <windows.h> // GlobalMemoryStatusEx(),GlobalMemoryStatusEx(),Get/SetEnvironmentVariable()
 #else
 #include <unistd.h> // sysconf()
 #endif

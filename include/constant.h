@@ -40,4 +40,19 @@ namespace hbm {
 /// upper bound for scale parameters
     extern MHBMLIB_API float MAX_SIMILARITY_SCALE;
 
+
+    /// tags for search direction
+    enum class SEARCH_DIRECTION {
+        FORWARD,///< forward
+        BACKWARD,///< backward
+        BIDIRECTIONAL,///< bidirectional
+    };
+
+    enum class TRANSFORMATION {
+        TRANSLATION,
+        RIGID,
+        SIMILARITY,
+        size,
+    };
+
 }

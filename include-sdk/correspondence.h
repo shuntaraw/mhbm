@@ -5,9 +5,9 @@
 
 #include "constant.h"
 
-#include "mesh.h"
 #include "KdTree.h"
 #include "Halfedge.h"
+#include "mesh.h"
 
 namespace hbm {
 
@@ -38,74 +38,28 @@ struct MeshCoordinate {
     }
 
     /// interpolate coordinates
-    slib::CVector<float, 3> get_position(const CMesh *mesh///< mesh
-                                        ) const {
-        auto& index = mesh->faces[fid].index;
-        return
-            (1 - t1 - t2) * mesh->vertices[index[0]].position +
-            t1 * mesh->vertices[index[1]].position +
-            t2 * mesh->vertices[index[2]].position;
-    }
+    slib::CVector<float, 3> get_position(const CMesh *mesh ) const;
 
     /// interpolate normals
-    slib::CVector<float, 3> get_normal(const CMesh *mesh///<mesh
-                                      ) const {
-        auto& index = mesh->faces[fid].index;
-        return
-            normalized_of((1 - t1 - t2) * mesh->vertices[index[0]].normal +
-                          t1 * mesh->vertices[index[1]].normal +
-                          t2 * mesh->vertices[index[2]].normal);
-    }
+    slib::CVector<float, 3> get_normal(const CMesh *mesh ) const;
 
     /// convert to coordinates
     void ToCoordinate(const hbm::CMesh *mesh,///<mesh
-                      slib::CVector<float, 3>& pos///<point
-                     ) const {
-        if (is_vertex()) {
-            pos = mesh->vertices[vid].position;
-        } else {
-            pos = get_position(mesh);
-        }
-    }
+        slib::CVector<float, 3>& pos///<point
+        ) const;
 
     /// reformat to normal matrix
     void ToNormalMatrix(const hbm::CMesh *mesh, ///<mesh
-                        const slib::CVector<float, 3>& normal, ///<normal
-                        int row, ///< row
-                        slib::MatrixGenerator<double>& gen///< matrix generator
-                       ) const {
-        if (is_vertex()) {
-            gen.Add(row, 3 * vid + 0, normal[0]);
-            gen.Add(row, 3 * vid + 1, normal[1]);
-            gen.Add(row, 3 * vid + 2, normal[2]);
-        } else {
-            auto& face = mesh->faces[fid];
-            gen.Add(row, 3 * face.index[0] + 0, normal[0] * (1 - t1 - t2));
-            gen.Add(row, 3 * face.index[0] + 1, normal[1] * (1 - t1 - t2));
-            gen.Add(row, 3 * face.index[0] + 2, normal[2] * (1 - t1 - t2));
-            gen.Add(row, 3 * face.index[1] + 0, normal[0] * t1);
-            gen.Add(row, 3 * face.index[1] + 1, normal[1] * t1);
-            gen.Add(row, 3 * face.index[1] + 2, normal[2] * t1);
-            gen.Add(row, 3 * face.index[2] + 0, normal[0] * t2);
-            gen.Add(row, 3 * face.index[2] + 1, normal[1] * t2);
-            gen.Add(row, 3 * face.index[2] + 2, normal[2] * t2);
-        }
-    }
+        const slib::CVector<float, 3>& normal, ///<normal
+        int row, ///< row
+        slib::MatrixGenerator<double>& gen///< matrix generator
+        ) const;
 
     /// reformat to coordinate matrix
     void ToPositionMatrix(const hbm::CMesh *mesh, ///<mesh
-                          int row, ///<row
-                          slib::MatrixGenerator<double>& gen///< matrix generator
-                         ) const {
-        if (is_vertex()) {
-            gen.Add(row, vid, 1);
-        } else {
-            auto& face = mesh->faces[fid];
-            gen.Add(row, face.index[0], 1 - t1 - t2);
-            gen.Add(row, face.index[1], t1);
-            gen.Add(row, face.index[2], t2);
-        }
-    }
+        int row, ///<row
+        slib::MatrixGenerator<double>& gen///< matrix generator
+        ) const;
 
 };
 
@@ -196,12 +150,7 @@ public:
     }
 
     /// add correspondences
-    void Append(const MeshCorrespondence& p) {
-        if (src_mesh_ != p.src_mesh_ || dst_mesh_ != p.dst_mesh_) {
-            ThrowRuntimeError("incompatible meshes");
-        }
-        data_.insert(data_.end(), p.data_.begin(), p.data_.end());
-    }
+    void Append(const MeshCorrespondence& p);
 
     /// reformat to pairs of coordinate
     const std::vector<MeshCoordinatePair>& ToMeshCoordinatePair() const {
@@ -211,11 +160,8 @@ public:
     /// invert correspondence
     void Invert();
 
-    void ScaleWeight(float scale)  {
-        for (auto& c : data_) {
-            c.weight *= scale;
-        }
-    }
+    void ScaleWeight(float scale);
+
 private:
     const CMesh *src_mesh_; ///< source mesh, from which correspondences are calculated.
     const CMesh *dst_mesh_; ///< destination mesh, to which correspondences are calculated.
@@ -227,8 +173,8 @@ class MHBMLIB_API ClosestPointSearch {
 public:
     /// set internal pointers
     void SetParameters(
-        const CMesh *src ,
-        const CMesh *dst ,
+        const CMesh *src,
+        const CMesh *dst,
         float max_distance2,
         float min_cosangle,
         bool allow_border);
@@ -264,13 +210,6 @@ private:
     bool allow_border_; ///< if the correspondence to mesh boundaries is allowed
     KdTree/*<CMesh::CVertex>*/ dst_kdtree_; ///< KD-tree for nearest point search. defined as mutable as it behave as a cache.
     hbm::HalfedgeMesh dst_halfedge_; ///< half edge data structure for adjacent face traversal
-};
-
-/// tags for search direction
-enum class SEARCH_DIRECTION {
-    FORWARD,///< forward
-    BACKWARD,///< backward
-    BIDIRECTIONAL,///< bidirectional
 };
 
 /// find correspondences between two meshes
