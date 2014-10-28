@@ -7,7 +7,7 @@
 
 namespace hbm {
 
-/// halfedge
+/// half-edge
 class Halfedge {
 public:
     Halfedge *pair() const;
@@ -27,7 +27,7 @@ private:
     friend class EditableHalfedgeMesh;
 };
 
-/// halfedge data structure
+/// half-edge data structure
 class HalfedgeMesh {
 public:
     HalfedgeMesh() = default;

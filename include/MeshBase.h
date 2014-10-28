@@ -9,7 +9,9 @@
 #include <array>
 #include "MatrixBase.h"
 
+/// shared utilities
 namespace slib {
+/// MeshVertexmesh manipulation
 namespace mesh {
 
 /// vertex coordinate

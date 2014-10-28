@@ -28,13 +28,13 @@ float CalculateWeight(float distance2, float max_distance2) {
 ///  | \   
 /// p0--p1>s
 void FindNearestPointToTriangle(const slib::CVector<float, 3>& query, // 3D coordinate of a query point
-    const slib::CVector<float, 3>& p0, // 3D coordinate of vertex 0
-    const slib::CVector<float, 3>& p1, // 3D coordinate of vertex 1
-    const slib::CVector<float, 3>& p2, // 3D coordinate of vertex 2
-    float& s, // barycentric coordinate on edge 01
-    float& t, // barycentric coordinate on edge 02
-    float& distance2 // squared distance to the nearest point
-    ) {
+                                const slib::CVector<float, 3>& p0, // 3D coordinate of vertex 0
+                                const slib::CVector<float, 3>& p1, // 3D coordinate of vertex 1
+                                const slib::CVector<float, 3>& p2, // 3D coordinate of vertex 2
+                                float& s, // barycentric coordinate on edge 01
+                                float& t, // barycentric coordinate on edge 02
+                                float& distance2 // squared distance to the nearest point
+                               ) {
     auto BP = p0 - query;
     auto E0 = p1 - p0;
     auto E1 = p2 - p0;
@@ -91,7 +91,7 @@ void FindNearestPointToTriangle(const slib::CVector<float, 3>& query, // 3D coor
         //  p2
         // 3 |\ 1
         //   |0\
-                // -p0--p1->s
+        // -p0--p1->s
         // 4 | 5 \ 6
         int region;
         if (s + t <= det) {
@@ -218,70 +218,70 @@ void FindNearestPointToTriangle(const slib::CVector<float, 3>& query, // 3D coor
 
 namespace hbm {
 
-    slib::CVector<float, 3> MeshCoordinate::get_position(const CMesh *mesh///< mesh
-        ) const {
-        auto& index = mesh->faces[fid].index;
-        return
-            (1 - t1 - t2) * mesh->vertices[index[0]].position +
-            t1 * mesh->vertices[index[1]].position +
-            t2 * mesh->vertices[index[2]].position;
-    }
+slib::CVector<float, 3> MeshCoordinate::get_position(const CMesh *mesh///< mesh
+                                                    ) const {
+    auto& index = mesh->faces[fid].index;
+    return
+        (1 - t1 - t2) * mesh->vertices[index[0]].position +
+        t1 * mesh->vertices[index[1]].position +
+        t2 * mesh->vertices[index[2]].position;
+}
 
-    slib::CVector<float, 3> MeshCoordinate::get_normal(const CMesh *mesh///<mesh
-        ) const {
-        auto& index = mesh->faces[fid].index;
-        return
-            normalized_of((1 - t1 - t2) * mesh->vertices[index[0]].normal +
-            t1 * mesh->vertices[index[1]].normal +
-            t2 * mesh->vertices[index[2]].normal);
-    }
+slib::CVector<float, 3> MeshCoordinate::get_normal(const CMesh *mesh///<mesh
+                                                  ) const {
+    auto& index = mesh->faces[fid].index;
+    return
+        normalized_of((1 - t1 - t2) * mesh->vertices[index[0]].normal +
+                      t1 * mesh->vertices[index[1]].normal +
+                      t2 * mesh->vertices[index[2]].normal);
+}
 
-    void MeshCoordinate::ToCoordinate(const hbm::CMesh *mesh,///<mesh
-        slib::CVector<float, 3>& pos///<point
-        ) const {
-        if (is_vertex()) {
-            pos = mesh->vertices[vid].position;
-        } else {
-            pos = get_position(mesh);
-        }
+void MeshCoordinate::ToCoordinate(const hbm::CMesh *mesh,///<mesh
+                                  slib::CVector<float, 3>& pos///<point
+                                 ) const {
+    if (is_vertex()) {
+        pos = mesh->vertices[vid].position;
+    } else {
+        pos = get_position(mesh);
     }
+}
 
-    void MeshCoordinate::ToNormalMatrix(const hbm::CMesh *mesh, ///<mesh
-        const slib::CVector<float, 3>& normal, ///<normal
-        int row, ///< row
-        slib::MatrixGenerator<double>& gen///< matrix generator
-        ) const {
-        if (is_vertex()) {
-            gen.Add(row, 3 * vid + 0, normal[0]);
-            gen.Add(row, 3 * vid + 1, normal[1]);
-            gen.Add(row, 3 * vid + 2, normal[2]);
-        } else {
-            auto& face = mesh->faces[fid];
-            gen.Add(row, 3 * face.index[0] + 0, normal[0] * (1 - t1 - t2));
-            gen.Add(row, 3 * face.index[0] + 1, normal[1] * (1 - t1 - t2));
-            gen.Add(row, 3 * face.index[0] + 2, normal[2] * (1 - t1 - t2));
-            gen.Add(row, 3 * face.index[1] + 0, normal[0] * t1);
-            gen.Add(row, 3 * face.index[1] + 1, normal[1] * t1);
-            gen.Add(row, 3 * face.index[1] + 2, normal[2] * t1);
-            gen.Add(row, 3 * face.index[2] + 0, normal[0] * t2);
-            gen.Add(row, 3 * face.index[2] + 1, normal[1] * t2);
-            gen.Add(row, 3 * face.index[2] + 2, normal[2] * t2);
-        }
+void MeshCoordinate::ToNormalMatrix(const hbm::CMesh *mesh, ///<mesh
+                                    const slib::CVector<float, 3>& normal, ///<normal
+                                    int row, ///< row
+                                    slib::MatrixGenerator<double>& gen///< matrix generator
+                                   ) const {
+    if (is_vertex()) {
+        gen.Add(row, 3 * vid + 0, normal[0]);
+        gen.Add(row, 3 * vid + 1, normal[1]);
+        gen.Add(row, 3 * vid + 2, normal[2]);
+    } else {
+        auto& face = mesh->faces[fid];
+        gen.Add(row, 3 * face.index[0] + 0, normal[0] * (1 - t1 - t2));
+        gen.Add(row, 3 * face.index[0] + 1, normal[1] * (1 - t1 - t2));
+        gen.Add(row, 3 * face.index[0] + 2, normal[2] * (1 - t1 - t2));
+        gen.Add(row, 3 * face.index[1] + 0, normal[0] * t1);
+        gen.Add(row, 3 * face.index[1] + 1, normal[1] * t1);
+        gen.Add(row, 3 * face.index[1] + 2, normal[2] * t1);
+        gen.Add(row, 3 * face.index[2] + 0, normal[0] * t2);
+        gen.Add(row, 3 * face.index[2] + 1, normal[1] * t2);
+        gen.Add(row, 3 * face.index[2] + 2, normal[2] * t2);
     }
+}
 
-    void MeshCoordinate::ToPositionMatrix(const hbm::CMesh *mesh, ///<mesh
-        int row, ///<row
-        slib::MatrixGenerator<double>& gen///< matrix generator
-        ) const {
-        if (is_vertex()) {
-            gen.Add(row, vid, 1);
-        } else {
-            auto& face = mesh->faces[fid];
-            gen.Add(row, face.index[0], 1 - t1 - t2);
-            gen.Add(row, face.index[1], t1);
-            gen.Add(row, face.index[2], t2);
-        }
+void MeshCoordinate::ToPositionMatrix(const hbm::CMesh *mesh, ///<mesh
+                                      int row, ///<row
+                                      slib::MatrixGenerator<double>& gen///< matrix generator
+                                     ) const {
+    if (is_vertex()) {
+        gen.Add(row, vid, 1);
+    } else {
+        auto& face = mesh->faces[fid];
+        gen.Add(row, face.index[0], 1 - t1 - t2);
+        gen.Add(row, face.index[1], t1);
+        gen.Add(row, face.index[2], t2);
     }
+}
 
 void ClosestPointSearch::SetParameters(const CMesh *src ,
                                        const CMesh *dst ,

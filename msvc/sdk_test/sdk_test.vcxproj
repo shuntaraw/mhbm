@@ -148,6 +148,21 @@
       <Project>{47c6ff75-fd9c-458a-aa7a-30dccc631a17}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\constant.h" />
+    <ClInclude Include="..\..\include\deformation.h" />
+    <ClInclude Include="..\..\include\exception_util.h" />
+    <ClInclude Include="..\..\include\landmark.h" />
+    <ClInclude Include="..\..\include\MatrixBase.h" />
+    <ClInclude Include="..\..\include\MatrixUtil.h" />
+    <ClInclude Include="..\..\include\mesh.h" />
+    <ClInclude Include="..\..\include\MeshBase.h" />
+    <ClInclude Include="..\..\include\mkl_blas_driver.h" />
+    <ClInclude Include="..\..\include\mkl_csr_driver.h" />
+    <ClInclude Include="..\..\include\mkl_driver.h" />
+    <ClInclude Include="..\..\include\mkl_lapack_driver.h" />
+    <ClInclude Include="..\..\include\mkl_pardiso_driver.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

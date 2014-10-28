@@ -10,10 +10,10 @@
 namespace slib {
 namespace mesh {
 
-/// classes and functions for manipulating subdivision surface
+/// modified-butterfly subdivision surface
 namespace mb {
 
-/// helper
+/// helper function for modified-butterfly subdivision surface
 /// @tparam Mesh polygon mesh
 template <typename Mesh>
 inline
@@ -256,6 +256,7 @@ CVector<float, 3> InsertVertex(
 
 }
 
+/// loop's subdivision surfaces
 namespace loop {
 
 /// helper

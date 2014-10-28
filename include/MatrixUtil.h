@@ -45,7 +45,7 @@ T norm2_squared_of(const CMatrix<T, NRows, NCols>& mat) {
 template <typename T, int NRows, int NCols>
 inline
 decltype(std::sqrt(T())) norm2_of(
-    const CMatrix<T, NRows, NCols>& mat // [in]
+    const CMatrix<T, NRows, NCols>& mat //
 ) {
     return std::sqrt(norm2_squared_of(mat));
 }
@@ -64,8 +64,8 @@ CMatrix < decltype(T() / std::sqrt(T())), NRows, NCols > normalized_of(const CMa
 template <typename T, int NRows, int NCols>
 inline
 T dot(
-    const CMatrix<T, NRows, NCols>& v1, // [in]
-    const CMatrix<T, NRows, NCols>& v2 // [in]
+    const CMatrix<T, NRows, NCols>& v1, //
+    const CMatrix<T, NRows, NCols>& v2 //
 ) {
     assert(v1.num_rows() == v2.num_rows());
     assert(v1.num_cols() == 1 && v2.num_cols() == 1);
@@ -378,10 +378,10 @@ CMatrix<T, 4, 4> make_rotation_matrix(const CMatrix<T, NRows, NRows>& rot) {
 template <typename T , int NRows>
 inline
 void ConvertToEulerAngle(
-    const CMatrix<T, NRows, NRows>& mat, // [in]
-    T& a, // [out]
-    T& b, // [out]
-    T& c // [out]
+    const CMatrix<T, NRows, NRows>& mat, //
+    T& a, //
+    T& b, //
+    T& c //
 ) {
     static_assert(NRows == 3 || NRows == 4, "invalid size");
     // assume b>= 0

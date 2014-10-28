@@ -12,8 +12,11 @@
 
 namespace slib {
 namespace mesh {
+
+/// mesh normal calculation
 namespace normal {
 
+/// update face normal
 template <typename Mesh>
 inline
 void UpdateFaces(
@@ -635,7 +638,10 @@ void FlipFaces(Mesh& mesh) {
     }
 }
 
+/// mesh transformation
 namespace transform {
+
+/// update vertex
 template <typename Vertex, int NRows>
 inline
 void UpdateVertex(
@@ -647,6 +653,7 @@ void UpdateVertex(
     vertex.normal = RotateVector(mat, vertex.normal);
 }
 
+/// update vertex
 template <typename Vertex, int NRows>
 inline
 void UpdateVertex(

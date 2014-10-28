@@ -51,9 +51,9 @@ double SolveRotationSVD(
 /// @see http://people.csail.mit.edu/bkph/papers/Absolute_Orientation.pdf
 double SolveSimilarity(
     const std::vector<PositionPair>& correspondence,
-    double *scale,///<[in,out] scale (fixed to 1 if nullptr)
-    slib::CMatrix<double, 3, 3> *rot,///<[in,out] rotation (fixed to identity if nullptr)
-    slib::CVector<double, 3> *trans ///<[in,out] translation (cannot be nullptr)
+    double *scale,///< scale (fixed to 1 if nullptr)
+    slib::CMatrix<double, 3, 3> *rot,///< rotation (fixed to identity if nullptr)
+    slib::CVector<double, 3> *trans ///< translation (cannot be nullptr)
 ) {
     if (correspondence.size() < 3) {
         ThrowRuntimeError("too few correspondence");
@@ -225,7 +225,7 @@ slib::CSparseMatrix<double> GenerateSymmetricLaplacian(const slib::CSparseMatrix
 /// deform in the local coordinate of 'src':
 double SolveLaplacianDeformationConstrainedPosition(
     const slib::CSparseMatrix<double>& src_laplacian, // (nxn)
-    slib::CMatrix<double>& src_pos, // [in,out] (nx3)
+    slib::CMatrix<double>& src_pos, //  (nx3)
     const slib::CMatrix<double>& src_org, // transformed (nx3)
     const slib::CMatrix<double>& wDu, // (mx3)
     const slib::CSparseMatrix<double>& wC, // (mxn)
@@ -383,12 +383,12 @@ slib::CSparseMatrix<double> ExpandLaplacianMatrix(const slib::CSparseMatrix<doub
 
 /// deform in the local coordinate of 'src'
 double SolveLaplacianDeformationConstrainedNormal(
-    const slib::CSparseMatrix<double>& src_laplacian, // nxn laplacian matrix
-    slib::CMatrix<double>& src_pos, // [in,out] nx3 coordinate matrix
-    const slib::CMatrix<double>& src_org, // nx3 original coordinate matrix
-    const slib::CMatrix<double>& wDu, // mx1 matrix of weighted anchor points
-    const slib::CSparseMatrix<double>& wC, // mx3n weighted correspondence matrix
-    TRANSFORMATION model // local deformation model = { translation, rigid, similarity }
+    const slib::CSparseMatrix<double>& src_laplacian, ///< nxn laplacian matrix
+    slib::CMatrix<double>& src_pos, ///<  nx3 coordinate matrix
+    const slib::CMatrix<double>& src_org, ///< nx3 original coordinate matrix
+    const slib::CMatrix<double>& wDu, ///< mx1 matrix of weighted anchor points
+    const slib::CSparseMatrix<double>& wC, ///< mx3n weighted correspondence matrix
+    TRANSFORMATION model ///< local deformation model = { translation, rigid, similarity }
 ) {
     int nvertices = src_laplacian.num_rows();
     int ncorrespondences = wDu.num_rows();

@@ -18,6 +18,43 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\correspondence.cpp" />
+    <ClCompile Include="..\..\src\deformation.cpp" />
+    <ClCompile Include="..\..\src\halfedge.cpp" />
+    <ClCompile Include="..\..\src\KdTree.cpp" />
+    <ClCompile Include="..\..\src\landmark.cpp" />
+    <ClCompile Include="..\..\src\mesh.cpp" />
+    <ClCompile Include="..\..\src\precompile.cpp" />
+    <ClCompile Include="..\..\src\registration.cpp" />
+    <ClCompile Include="..\..\src\rply.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include-sdk\correspondence.h" />
+    <ClInclude Include="..\..\include-sdk\halfedge.h" />
+    <ClInclude Include="..\..\include-sdk\kdtree.h" />
+    <ClInclude Include="..\..\include-sdk\MeshFile.h" />
+    <ClInclude Include="..\..\include-sdk\MeshLaplacian.h" />
+    <ClInclude Include="..\..\include-sdk\MeshObj.h" />
+    <ClInclude Include="..\..\include-sdk\MeshPly.h" />
+    <ClInclude Include="..\..\include-sdk\MeshSubdivision.h" />
+    <ClInclude Include="..\..\include-sdk\MeshUtil.h" />
+    <ClInclude Include="..\..\include-sdk\registration.h" />
+    <ClInclude Include="..\..\include-sdk\rply.h" />
+    <ClInclude Include="..\..\include\constant.h" />
+    <ClInclude Include="..\..\include\deformation.h" />
+    <ClInclude Include="..\..\include\exception_util.h" />
+    <ClInclude Include="..\..\include\landmark.h" />
+    <ClInclude Include="..\..\include\MatrixBase.h" />
+    <ClInclude Include="..\..\include\MatrixUtil.h" />
+    <ClInclude Include="..\..\include\mesh.h" />
+    <ClInclude Include="..\..\include\MeshBase.h" />
+    <ClInclude Include="..\..\include\mkl_blas_driver.h" />
+    <ClInclude Include="..\..\include\mkl_csr_driver.h" />
+    <ClInclude Include="..\..\include\mkl_driver.h" />
+    <ClInclude Include="..\..\include\mkl_lapack_driver.h" />
+    <ClInclude Include="..\..\include\mkl_pardiso_driver.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{47C6FF75-FD9C-458A-AA7A-30DCCC631A17}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -140,43 +177,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\include\constant.h" />
-    <ClInclude Include="..\..\include\correspondence.h" />
-    <ClInclude Include="..\..\include\deformation.h" />
-    <ClInclude Include="..\..\include\exception_util.h" />
-    <ClInclude Include="..\..\include\Halfedge.h" />
-    <ClInclude Include="..\..\include\KdTree.h" />
-    <ClInclude Include="..\..\include\landmark.h" />
-    <ClInclude Include="..\..\include\MatrixBase.h" />
-    <ClInclude Include="..\..\include\MatrixUtil.h" />
-    <ClInclude Include="..\..\include\mesh.h" />
-    <ClInclude Include="..\..\include\MeshBase.h" />
-    <ClInclude Include="..\..\include\MeshFile.h" />
-    <ClInclude Include="..\..\include\MeshLaplacian.h" />
-    <ClInclude Include="..\..\include\MeshObj.h" />
-    <ClInclude Include="..\..\include\MeshPly.h" />
-    <ClInclude Include="..\..\include\MeshSubdivision.h" />
-    <ClInclude Include="..\..\include\MeshUtil.h" />
-    <ClInclude Include="..\..\include\mkl_blas_driver.h" />
-    <ClInclude Include="..\..\include\mkl_csr_driver.h" />
-    <ClInclude Include="..\..\include\mkl_driver.h" />
-    <ClInclude Include="..\..\include\mkl_lapack_driver.h" />
-    <ClInclude Include="..\..\include\mkl_pardiso_driver.h" />
-    <ClInclude Include="..\..\include\registration.h" />
-    <ClInclude Include="..\..\include\rply.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\src\correspondence.cpp" />
-    <ClCompile Include="..\..\src\deformation.cpp" />
-    <ClCompile Include="..\..\src\Halfedge.cpp" />
-    <ClCompile Include="..\..\src\KdTree.cpp" />
-    <ClCompile Include="..\..\src\landmark.cpp" />
-    <ClCompile Include="..\..\src\mesh.cpp" />
-    <ClCompile Include="..\..\src\precompile.cpp" />
-    <ClCompile Include="..\..\src\registration.cpp" />
-    <ClCompile Include="..\..\src\rply.c" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

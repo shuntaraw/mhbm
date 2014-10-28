@@ -9,7 +9,7 @@
 namespace hbm {
 
 /// vertex of a mesh
-struct CCustomVertex :
+struct MeshVertex :
         public slib::mesh::CVertexPosition,
         public slib::mesh::CVertexColor,
         public slib::mesh::CVertexNormal {
@@ -18,17 +18,17 @@ struct CCustomVertex :
 };
 
 /// face of a mesh
-typedef slib::mesh::CTriangleIndex  CCustomFace;
+typedef slib::mesh::CTriangleIndex  MeshFace;
 
 /// triangular mesh
-class MHBMLIB_API CMesh : public slib::mesh::CPolygonMesh<CCustomVertex, CCustomFace> {
+class MHBMLIB_API CMesh : public slib::mesh::CPolygonMesh<MeshVertex, MeshFace> {
 public:
     CMesh() = default;
     CMesh(const CMesh&) = default;
     CMesh& operator=(const CMesh& m) = default;
-    CMesh(CMesh&& m) : slib::mesh::CPolygonMesh<CCustomVertex, CCustomFace>(std::move(m)) {}
+    CMesh(CMesh&& m) : slib::mesh::CPolygonMesh<MeshVertex, MeshFace>(std::move(m)) {}
     CMesh& operator=(CMesh && m) {
-        slib::mesh::CPolygonMesh<CCustomVertex, CCustomFace>::operator=(std::move(m));
+        slib::mesh::CPolygonMesh<MeshVertex, MeshFace>::operator=(std::move(m));
         return *this;
     }
 
@@ -49,8 +49,8 @@ public:
     std::vector<int> SelectNonManifoldVertices()const;
     std::vector<int> SelectCollapsedFaces()const;
     std::vector<int> SelectUnusedVertices()const;
-    void DeleteVertices( const std::vector<int>& vid_to_delete );
-    void DeleteFaces( const std::vector<int>& fid_to_delete ) ;
+    void DeleteVertices(const std::vector<int>& vid_to_delete);
+    void DeleteFaces(const std::vector<int>& fid_to_delete) ;
     CMesh SubdivideModifiedButterfly() const;
     CMesh SubdivideLoop() const;
 };

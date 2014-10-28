@@ -8,6 +8,7 @@
 
 namespace slib {
 namespace mesh {
+/// loading ply meshes
 namespace ply {
 
 /// callback for rply
@@ -15,7 +16,7 @@ namespace ply {
 template <typename CVertex>
 inline
 int ReadVertexPosition(
-    p_ply_argument argument ///< [in] rply argument
+    p_ply_argument argument ///<  rply argument
 ) {
     std::vector<CVertex> *vertices;
     long index;
@@ -31,7 +32,7 @@ int ReadVertexPosition(
 template <typename CVertex>
 inline
 int ReadVertexNormal(
-    p_ply_argument argument ///< [in] rply argument
+    p_ply_argument argument ///<  rply argument
 ) {
     std::vector<CVertex> *vertices;
     long index;
@@ -47,7 +48,7 @@ int ReadVertexNormal(
 template <typename CVertex>
 inline
 int ReadVertexColor(
-    p_ply_argument argument ///< [in] rply argument
+    p_ply_argument argument ///<  rply argument
 ) {
     std::vector<CVertex> *vertices;
     long index;
@@ -63,7 +64,7 @@ int ReadVertexColor(
 template <typename CVertex>
 inline
 int ReadVertexTexCoord(
-    p_ply_argument argument ///< [in] rply argument
+    p_ply_argument argument ///<  rply argument
 ) {
     std::vector<CVertex> *vertices;
     long index;
@@ -79,7 +80,7 @@ int ReadVertexTexCoord(
 template <typename CFace>
 inline
 int ReadFaceIndex(
-    p_ply_argument argument ///< [in] rply argument
+    p_ply_argument argument ///<  rply argument
 ) {
     std::vector<CFace> *faces;
     ply_get_argument_user_data(argument, reinterpret_cast<void **>(&faces), 0);
@@ -107,7 +108,7 @@ int ReadFaceIndex(
 template <typename CVertex, typename CFace>
 inline
 void SetReadVertexPositionFace(
-    p_ply ply, ///< [in] rply argument
+    p_ply ply, ///<  rply argument
     std::vector<CVertex> *vertices, ///< [out] mesh
     std::vector<CFace> *faces ///< [out] mesh
 ) {
@@ -125,7 +126,7 @@ void SetReadVertexPositionFace(
 template <typename CVertex>
 inline
 void SetReadVertexNormal(
-    p_ply ply, ///< [in] rply argument
+    p_ply ply, ///<  rply argument
     std::vector<CVertex> *vertices, ///< [out] mesh
     typename std::enable_if < !std::is_base_of<CVertexNormal, CVertex>::value >::type * = 0
 ) {
@@ -137,7 +138,7 @@ void SetReadVertexNormal(
 template <typename CVertex>
 inline
 void SetReadVertexNormal(
-    p_ply ply, ///< [in] rply argument
+    p_ply ply, ///<  rply argument
     std::vector<CVertex> *vertices, ///< [out] mesh
     typename std::enable_if<std::is_base_of<CVertexNormal, CVertex>::value>::type * = 0
 ) {
@@ -151,7 +152,7 @@ void SetReadVertexNormal(
 template <typename CVertex>
 inline
 void SetReadVertexColor(
-    p_ply ply, ///< [in] rply argument
+    p_ply ply, ///<  rply argument
     std::vector<CVertex> *vertices, ///< [out] mesh
     typename std::enable_if < !std::is_base_of<slib::mesh::CVertexColor, CVertex>::value >::type * = 0
 ) {
@@ -163,7 +164,7 @@ void SetReadVertexColor(
 template <typename CVertex>
 inline
 void SetReadVertexColor(
-    p_ply ply, ///< [in] rply argument
+    p_ply ply, ///<  rply argument
     std::vector<CVertex> *vertices, ///< [out] mesh
     typename std::enable_if<std::is_base_of<CVertexColor, CVertex>::value>::type * = 0
 ) {
@@ -188,7 +189,7 @@ void SetReadVertexColor(
 template <typename CVertex>
 inline
 void SetReadVertexTexCoord(
-    p_ply ply, ///< [in] rply argument
+    p_ply ply, ///<  rply argument
     std::vector<CVertex> *vertices, ///< [out] mesh
     typename std::enable_if < !std::is_base_of<CVertexTexCoord, CVertex>::value >::type * = 0
 ) {
@@ -200,7 +201,7 @@ void SetReadVertexTexCoord(
 template <typename CVertex>
 inline
 void SetReadVertexTexCoord(
-    p_ply ply, ///< [in] rply argument
+    p_ply ply, ///<  rply argument
     std::vector<CVertex> *vertices, ///< [out] mesh
     typename std::enable_if<std::is_base_of<CVertexTexCoord, CVertex>::value>::type * = 0
 ) {
@@ -273,7 +274,7 @@ template <typename Mesh>
 inline
 void ReadPly(
     Mesh& mesh, ///< [out] mesh
-    const std::string& filename ///< [in] filename
+    const std::string& filename ///<  filename
 ) {
     std::clog << "mesh <= " << filename << std::endl;
     p_ply ply = ply_open(filename.c_str(), 0, 0, 0);
@@ -312,8 +313,8 @@ void ReadPly(
 template <typename Mesh>
 inline
 void WritePly(
-    const Mesh& mesh, ///< [in] polygon mesh
-    const std::string& filename ///< [in] filename
+    const Mesh& mesh, ///<  polygon mesh
+    const std::string& filename ///<  filename
 ) {
     std::clog << "mesh => " << filename << std::endl;
     std::ofstream ofs(filename, std::ios::binary);

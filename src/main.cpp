@@ -10,7 +10,7 @@
 #include "mesh.h"
 #include "landmark.h"
 
-/// param file parser
+/// entry point
 class Main {
 public:
     /// parse command line options

@@ -3,6 +3,7 @@
 
 namespace slib {
 namespace mesh {
+/// loading obj meshes
 namespace obj {
 
 /// callback for obj
@@ -35,7 +36,7 @@ template <typename Mesh>
 inline
 void ReadObj(
     Mesh& mesh, ///< [out] mesh
-    const std::string& filename ///< [in] filename
+    const std::string& filename ///<  filename
 ) {
     std::cout << "mesh <= " << filename << std::endl;
     std::ifstream ifs(filename);
@@ -100,8 +101,8 @@ void ReadObj(
 template <typename Mesh>
 inline
 void WriteObj(
-    const Mesh& mesh, ///< [in] polygon mesh
-    const std::string& filename ///< [in] filename
+    const Mesh& mesh, ///<  polygon mesh
+    const std::string& filename ///<  filename
 ) {
     std::clog << "mesh => " << filename << std::endl;
     std::ofstream ofs(filename);

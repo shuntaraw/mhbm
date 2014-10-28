@@ -38,28 +38,28 @@ struct MeshCoordinate {
     }
 
     /// interpolate coordinates
-    slib::CVector<float, 3> get_position(const CMesh *mesh ) const;
+    slib::CVector<float, 3> get_position(const CMesh *mesh) const;
 
     /// interpolate normals
-    slib::CVector<float, 3> get_normal(const CMesh *mesh ) const;
+    slib::CVector<float, 3> get_normal(const CMesh *mesh) const;
 
     /// convert to coordinates
     void ToCoordinate(const hbm::CMesh *mesh,///<mesh
-        slib::CVector<float, 3>& pos///<point
-        ) const;
+                      slib::CVector<float, 3>& pos///<point
+                     ) const;
 
     /// reformat to normal matrix
     void ToNormalMatrix(const hbm::CMesh *mesh, ///<mesh
-        const slib::CVector<float, 3>& normal, ///<normal
-        int row, ///< row
-        slib::MatrixGenerator<double>& gen///< matrix generator
-        ) const;
+                        const slib::CVector<float, 3>& normal, ///<normal
+                        int row, ///< row
+                        slib::MatrixGenerator<double>& gen///< matrix generator
+                       ) const;
 
     /// reformat to coordinate matrix
     void ToPositionMatrix(const hbm::CMesh *mesh, ///<mesh
-        int row, ///<row
-        slib::MatrixGenerator<double>& gen///< matrix generator
-        ) const;
+                          int row, ///<row
+                          slib::MatrixGenerator<double>& gen///< matrix generator
+                         ) const;
 
 };
 

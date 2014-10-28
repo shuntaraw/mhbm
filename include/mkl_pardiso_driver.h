@@ -186,7 +186,7 @@ inline void PARDISO_driver(int mtype, char transa, const CSparseMatrix<T>& A, co
     PARDISO(pt, &maxfct, &mnum, &mtype, &phase, &n, a, ia, ja, 0, &nrhs, iparm, &msglvl, b, x, &error);
 }
 
-///  PARDISO
+///  driver for PARDISO
 /// @tparam T  element
 template <typename T>
 class PardisoDriver {

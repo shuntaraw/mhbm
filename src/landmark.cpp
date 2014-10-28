@@ -7,7 +7,7 @@
 #include "correspondence.h"
 #include "deformation.h" // transform_coordinate_matrix
 
-/// classes and functions for non-rigid mesh registration
+/// non-rigid mesh registration
 namespace hbm {
 
 MHBMLIB_API void ImportLandmarkMap(

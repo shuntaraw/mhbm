@@ -76,7 +76,7 @@ void InsertResult(size_t vid,
 }
 
 namespace hbm {
-void KdTree::Construct(std::vector<CCustomVertex>::const_iterator  begin, std::vector<CCustomVertex>::const_iterator end, int bucket_size /*= DEFAULT_BUCKET_SIZE*/) {
+void KdTree::Construct(std::vector<MeshVertex>::const_iterator  begin, std::vector<MeshVertex>::const_iterator end, int bucket_size /*= DEFAULT_BUCKET_SIZE*/) {
     size_t ndata = std::distance(begin, end);
     data_.resize(ndata);
     for (size_t i = 0; i < ndata; i++, ++begin) {

@@ -24,7 +24,7 @@ public:
     KdTree(const KdTree&) = delete;
     KdTree& operator=(const KdTree&) = delete;
 
-    void Construct(std::vector<CCustomVertex>::const_iterator begin, std::vector<CCustomVertex>::const_iterator end, int bucket_size = DEFAULT_BUCKET_SIZE);
+    void Construct(std::vector<MeshVertex>::const_iterator begin, std::vector<MeshVertex>::const_iterator end, int bucket_size = DEFAULT_BUCKET_SIZE);
 
     /// update kd-tree
     void Reconstruct(int bucket_size = DEFAULT_BUCKET_SIZE);

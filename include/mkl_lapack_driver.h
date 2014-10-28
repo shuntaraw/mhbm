@@ -75,10 +75,10 @@ inline int LAPACKE_gesvd(int layout, char jobu, char jobvt,
 template <typename T, int NRows, int NCols>
 inline
 void LAPACKE_gesvd(
-    const CMatrix<T, NRows, NCols>& mat, ///< [in]
-    CMatrix<T, NRows, NRows>& matU, ///< [out]
-    CVector < T, (NRows < NCols ? NRows : NCols) > & vecW, ///< [out]
-    CMatrix<T, NCols, NCols>& matVt ///< [out]
+    const CMatrix<T, NRows, NCols>& mat, ///<
+    CMatrix<T, NRows, NRows>& matU, ///<
+    CVector < T, (NRows < NCols ? NRows : NCols) > & vecW, ///<
+    CMatrix<T, NCols, NCols>& matVt ///<
 ) {
     assert(mat.num_rows() == matU.num_rows());
     assert(mat.num_rows() == matU.num_cols());
@@ -107,7 +107,7 @@ inline int LAPACKE_syev(int layout, char jobz, char uplo, int n,
 template <typename T, int NRows>
 inline void LAPACKE_syev(
     CMatrix<T, NRows, NRows>& mat, ///< upper triangle
-    CVector<T, NRows>& value  ///< [out]
+    CVector<T, NRows>& value  ///<
 ) {
     assert(mat.num_rows() == mat.num_cols());
     assert(mat.num_cols() == value.num_rows());
