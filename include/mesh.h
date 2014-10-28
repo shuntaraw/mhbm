@@ -21,7 +21,7 @@ struct CCustomVertex :
 
 /// face of a mesh
 struct CCustomFace :
-        public slib::mesh::CTriangleIndex  {};
+    public slib::mesh::CTriangleIndex {};
 
 /// triangular mesh
 class CMesh : public slib::mesh::CPolygonMesh<CCustomVertex, CCustomFace> {
@@ -59,31 +59,7 @@ slib::CSparseMatrix<double> GenerateLaplacianMatrix(CMesh mesh, const slib::CMat
                                                    ) {
     slib::mesh::ConvertCoordinateToMesh(org_pos, mesh);
     slib::CSparseMatrix<double> L;
-//    slib::mesh::GetApexLaplacian(mesh, L, false);
     slib::mesh::GetMeanCurvatureNormalLaplacian(mesh, L, true);
-//	    slib::mesh::GetMeanValueCoordinateLaplacian(mesh,L);
-//	    slib::mesh::GetTopologicalLaplacian(mesh,L);
-    //if (rigidness_weight) {
-    //    slib::MatrixGenerator<double> gen;
-    //    int nvertices = mesh.vertices.size();
-    //    for (int vid = 0; vid < nvertices; vid++) {
-    //        gen.Add(vid, vid, 1 + rigidness_weight * (1 - mesh.vertices[vid].elasticity));
-    //    }
-    //    L = gen.GenerateSparse(nvertices, nvertices).MultiplyTo('N', L);
-    //}
-    /*
-    #ifndef NDEBUG
-    // laplacian has to be symmetric
-    int nvertices = org_pos.num_rows();
-    for (int r = 0; r < nvertices; r++) {
-        for (int i = L.row_index_ptr()[r]; i < L.row_index_ptr()[r + 1]; i ++) {
-            int c = L.col_index_ptr()[i - 1] - 1;
-            if (r>c)
-                assert(L(c, r) == L.element_ptr()[i-1]);
-        }
-    }
-    #endif
-    */
     return L;
 }
 

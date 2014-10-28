@@ -13,7 +13,6 @@
 
 namespace hbm {
 
-
 /// KD-tree
 /// coordinates are duplicated for acceleration.
 class KdTree {

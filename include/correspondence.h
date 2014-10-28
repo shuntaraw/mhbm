@@ -296,7 +296,7 @@ private:
     float min_cosangle_; ///< angle threshold
     bool allow_border_; ///< if the correspondence to mesh boundaries is allowed
      KdTree/*<CMesh::CVertex>*/ dst_kdtree_; ///< KD-tree for nearest point search. defined as mutable as it behave as a cache.
-    slib::mesh::HalfedgeMesh dst_halfedge_; ///< half edge data structure for adjacent face traversal
+     hbm::HalfedgeMesh dst_halfedge_; ///< half edge data structure for adjacent face traversal
 };
 
 /// tags for search direction

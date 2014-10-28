@@ -17,7 +17,7 @@ namespace mb {
 /// @tparam Mesh polygon mesh
 template <typename Mesh>
 inline
-CVector<float, 3> InsertBoundary(const Mesh& mesh, const Halfedge *edge) {
+CVector<float, 3> InsertBoundary(const Mesh& mesh, const hbm::Halfedge *edge) {
     // -b--a<-a--b-
     //  _\/_\/_\/_
     float a =  9.0 / 16;
@@ -47,7 +47,7 @@ template <typename Mesh>
 static
 CVector<float, 3> InsertBorder(
     const Mesh& mesh,
-    const Halfedge *edge) {
+    const hbm::Halfedge *edge) {
     // '0' is boundary
     //   9...2...3
     //  .'. / \ .'.
@@ -123,7 +123,7 @@ template <typename Mesh>
 static
 CVector<float, 3> InsertOrdinary(
     const Mesh& mesh,
-    const Halfedge *edge) {
+    const hbm::Halfedge *edge) {
     //   9---2---3
     //  / \ / \ / \
     // 8---0<--1---4
@@ -162,7 +162,7 @@ template <typename Mesh>
 static
 CVector<float, 3> InsertExtraordinary(
     const Mesh& mesh, // polygon mesh
-    const Halfedge *edge , // an edge on which a new vertex is generated
+    const hbm::Halfedge *edge, // an edge on which a new vertex is generated
     int degree // degree of the extraordinary vertex
 ) {
     CVector<float, 3> pos = 0.75f * mesh.vertices[edge->vertex()].position;
@@ -193,7 +193,7 @@ CVector<float, 3> InsertExtraordinary(
         //  : / \ /
         //   2---1
         assert(degree > 4);
-        const Halfedge *first = edge;
+        const hbm::Halfedge *first = edge;
         for (int j = 0; j < degree; j++) {
             float s = (0.25 + cos(2 * M_PI * j / degree) + 0.5 * cos(4 * M_PI * j / degree)) / degree;
             pos += s * mesh.vertices[edge->pair()->vertex()].position;
@@ -210,7 +210,7 @@ template <typename Mesh>
 static
 CVector<float, 3> InsertVertex(
     const Mesh& mesh, // polygon mesh
-    const Halfedge *edge // an edge on which a new vertex is generated
+    const hbm::Halfedge *edge // an edge on which a new vertex is generated
 ) {
     // boundary edge
     if (!edge->pair()) {
@@ -264,7 +264,7 @@ template <typename Mesh>
 static
 CVector<float, 3> InsertVertex(
     const Mesh& mesh,
-    const Halfedge *edge) {
+    const hbm::Halfedge *edge) {
     if (!edge->pair()) {
         // boundary
         return mesh.vertices[edge->vertex()].position / 2 + mesh.vertices[edge->next()->next()->vertex()].position / 2;
@@ -285,7 +285,7 @@ template <typename Mesh>
 static
 CVector<float, 3> UpdateVertex(
     const Mesh& mesh,
-    const Halfedge *edge) {
+    const hbm::Halfedge *edge) {
     CVector<float, 3> pos {0, 0, 0};
     int degree = 1;
     for (auto he = edge->next()->pair(); he != edge; he = he->next()->pair()) {
@@ -335,7 +335,7 @@ inline
 Mesh SubdivideModifiedButterfly(
     const Mesh& mesh // polygon mesh
 ) {
-    HalfedgeMesh hds;
+    hbm::HalfedgeMesh hds;
     hds.Construct(mesh);
     auto vertices = mesh.vertices;
     std::vector<typename Mesh::CFace> faces;
@@ -398,7 +398,7 @@ inline
 Mesh SubdivideLoop(
     const Mesh& mesh // polygon mesh
 ) {
-    HalfedgeMesh hds;
+    hbm::HalfedgeMesh hds;
     hds.Construct(mesh);
     auto vertices = mesh.vertices;
 
