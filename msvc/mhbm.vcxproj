@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\correspondence.cpp" />
     <ClCompile Include="..\src\deformation.cpp" />
+    <ClCompile Include="..\src\KdTree.cpp" />
     <ClCompile Include="..\src\landmark.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\rply.c" />
