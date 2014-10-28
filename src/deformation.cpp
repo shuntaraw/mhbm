@@ -555,7 +555,7 @@ MHBMLIB_API slib::CMatrix<float, 4, 4> EstimateAffine(
         if (enalble_icp) {
             corpos = mcp.Find().ToCoordinate();
         }
-        if (landmarkC) {
+        if (landmarkC  ) {
             auto lmpos = ConvertLandmarkToCoordinates(cur_mesh, *landmarkC, dst_mesh, *landmarkD, landmark_weight);
             corpos.insert(corpos.end(), lmpos.begin(), lmpos.end());
         }

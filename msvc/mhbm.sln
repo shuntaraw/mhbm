@@ -5,9 +5,9 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mhbm", "mhbm\mhbm.vcxproj", "{17FF36BA-845A-4D87-BB1F-838654E9C7E2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mhbmlib", "sdk\sdk.vcxproj", "{47C6FF75-FD9C-458A-AA7A-30DCCC631A17}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sdk", "sdk\sdk.vcxproj", "{47C6FF75-FD9C-458A-AA7A-30DCCC631A17}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mhbmlib_test", "sdk_test\sdk_test.vcxproj", "{CDA9A07A-C5C3-4AC8-BF93-E71F57BDF1BB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sdk_test", "sdk_test\sdk_test.vcxproj", "{CDA9A07A-C5C3-4AC8-BF93-E71F57BDF1BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,12 +21,14 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
 		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Debug|Mixed Platforms.Build.0 = Debug|x64
-		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Debug|Win32.ActiveCfg = Debug|x64
+		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Debug|Win32.Build.0 = Debug|Win32
 		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Debug|x64.ActiveCfg = Debug|x64
 		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Debug|x64.Build.0 = Debug|x64
 		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Release|Mixed Platforms.ActiveCfg = Release|x64
 		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Release|Mixed Platforms.Build.0 = Release|x64
-		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Release|Win32.ActiveCfg = Release|x64
+		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Release|Win32.ActiveCfg = Release|Win32
+		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Release|Win32.Build.0 = Release|Win32
 		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Release|x64.ActiveCfg = Release|x64
 		{17FF36BA-845A-4D87-BB1F-838654E9C7E2}.Release|x64.Build.0 = Release|x64
 		{47C6FF75-FD9C-458A-AA7A-30DCCC631A17}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32

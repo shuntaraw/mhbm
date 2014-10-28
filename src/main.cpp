@@ -474,7 +474,8 @@ private:
                 ThrowLogicError("undefined model");
             }
             slib::CMatrix<float, 4, 4> mat;
-            if (deformable_.landmark().num_rows() > 2) {
+            if (deformable_.landmark().num_rows() == scan_landmark_.num_rows() &&
+                deformable_.landmark().num_rows() > 2) {
                 bool enable_icp = false;
                 mat = EstimateAffine(
                           deformable_.mesh(),
