@@ -22,12 +22,10 @@
 // utility
 #define TRACE printf
 #include "exception_util.h"
-#include "Halfedge.h"
-#include "KdTree.h"
+//#include "Halfedge.h"
+//#include "KdTree.h"
 #include "MatrixUtil.h"
-#include "MeshFile.h"
-#include "MeshUtil.h"
-#include "MeshSubdivision.h"
+//#include "MeshSubdivision.h"
 #include "mkl_blas_driver.h"
 #include "mkl_lapack_driver.h"
 #include "mkl_csr_driver.h"

@@ -4,8 +4,9 @@
 #pragma once
 
 #include "constant.h"
-#include "mesh.h"
-
+#include "CMesh.h"
+#include "KdTree.h"
+#include "Halfedge.h"
 //namespace slib {
 //namespace kdt {
 //    /// traits for class KdTree<hbm::CMesh::CVertex>

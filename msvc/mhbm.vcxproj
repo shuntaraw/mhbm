@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\CMesh.cpp" />
     <ClCompile Include="..\src\correspondence.cpp" />
     <ClCompile Include="..\src\deformation.cpp" />
     <ClCompile Include="..\src\Halfedge.cpp" />
@@ -21,6 +22,7 @@
     <ClCompile Include=".\precompile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\CMesh.h" />
     <ClInclude Include="..\include\constant.h" />
     <ClInclude Include="..\include\correspondence.h" />
     <ClInclude Include="..\include\deformation.h" />
@@ -30,7 +32,6 @@
     <ClInclude Include="..\include\landmark.h" />
     <ClInclude Include="..\include\MatrixBase.h" />
     <ClInclude Include="..\include\MatrixUtil.h" />
-    <ClInclude Include="..\include\mesh.h" />
     <ClInclude Include="..\include\MeshBase.h" />
     <ClInclude Include="..\include\MeshFile.h" />
     <ClInclude Include="..\include\MeshLaplacian.h" />

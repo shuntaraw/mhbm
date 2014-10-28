@@ -121,9 +121,9 @@ float SolveRotationSVD(
 /// @see http://people.csail.mit.edu/bkph/papers/Absolute_Orientation.pdf
 double SolveSimilarity(
     const std::vector<PositionPair>& correspondence,
-    float *scale,///<[in,out] scale (fixed to 1 if nullptr)
-    slib::CMatrix<float, 3, 3> *rot,///<[in,out] rotation (fixed to identity if nullptr)
-    slib::CVector<float, 3> *trans ///<[in,out] translation (cannot be nullptr)
+    double *scale,///<[in,out] scale (fixed to 1 if nullptr)
+    slib::CMatrix<double, 3, 3> *rot,///<[in,out] rotation (fixed to identity if nullptr)
+    slib::CVector<double, 3> *trans ///<[in,out] translation (cannot be nullptr)
 ) {
     if (correspondence.size() < 3) {
         ThrowRuntimeError("too few correspondence");
@@ -383,6 +383,75 @@ double SolveLaplacianDeformationConstrainedPosition(
     return residual;
 }
 
+/// reorder 3D coordinate matrix from mx3 to 3mx1
+/**
+@verbatim
+[x y z] -> [x]
+[: : :]    [y]
+[     ]    [z]
+[     ]    [:]
+@endverbatim
+*/
+/// @return 3mx1 coordinate matrix
+slib::CMatrix<double> VectorizeCoordinates(const slib::CMatrix<double>& mat) {
+    assert(mat.num_cols() == 3);
+    slib::CMatrix<double> ret(mat.num_rows() * 3, 1);
+    for (int c = 0; c < 3; c++) {
+        for (int r = 0; r < mat.num_rows(); r++) {
+            ret(3 * r + c, 0) = mat(r, c);
+        }
+    }
+    return ret;
+}
+
+/// reorder 3D coordinate matrix from mx3 to 3mx1
+/**
+@verbatim
+[x] -> [x y z]
+[y]    [  :  ]
+[z]
+[:]
+@endverbatim
+*/
+/// @return 3mx1 coordinate matrix
+slib::CMatrix<double> StackCoordinates(const slib::CMatrix<double>& mat) {
+    assert(mat.num_cols() == 1);
+    assert(mat.num_rows() % 3 == 0);
+    int nrows = mat.num_rows() / 3;
+    slib::CMatrix<double> ret(nrows, 3);
+    for (int c = 0; c < 3; c++) {
+        for (int r = 0; r < nrows; r++) {
+            ret(r, c) = mat(3 * r + c, 0);
+        }
+    }
+    return ret;
+}
+
+/// expand a matrix from nxn to 3nx3n block diagonal
+/**
+@verbatim
+[e  ]   [e   ]
+[ \ ] = [ e  ]
+[   ]   [  e ]
+[   \]
+@endverbatim
+*/
+/// @return 3nx3n block diagonal matrix
+slib::CSparseMatrix<double> ExpandLaplacianMatrix(const slib::CSparseMatrix<double>& mat) {
+    //const int offset = mat.IsOneBased() ? 1 : 0;
+    slib::MatrixGenerator<double> gen;
+    for (int r = 0; r < mat.num_rows(); r++) {
+        for (int idx = mat.row_index_ptr()[r] - 1; idx < mat.row_index_ptr()[r + 1] - 1; idx++) {
+            int c = mat.col_index_ptr()[idx] - 1;
+            double v = mat.element_ptr()[idx];
+            gen.Add(3 * r + 0, 3 * c + 0, v);
+            gen.Add(3 * r + 1, 3 * c + 1, v);
+            gen.Add(3 * r + 2, 3 * c + 2, v);
+        }
+    }
+    return gen.GenerateSparse(mat.num_rows() * 3, mat.num_cols() * 3);
+}
+
 /// deform in the local coordinate of 'src'
 double SolveLaplacianDeformationConstrainedNormal(
     const slib::CSparseMatrix<double>& src_laplacian, // nxn laplacian matrix
@@ -478,7 +547,7 @@ double SolveLaplacianDeformationConstrainedNormal(
 void DeformableMesh::LoadMesh(CMesh m) {
     mesh_ = std::move(m);
     mesh_.UpdateGeometry();
-    slib::mesh::ConvertMeshToCoordinate(mesh_, org_pos_);
+    mesh_.ConvertMeshToCoordinate(org_pos_);
 }
 
 void DeformableMesh::ResetCoordinates() {
@@ -490,15 +559,15 @@ void DeformableMesh::ResetCoordinates() {
 }
 
 void DeformableMesh::ApplyTransformation(const slib::CMatrix<float, 4, 4>& mat) {
-    slib::mesh::AffineTransform(mesh_, mat);
+    mesh_.AffineTransform(mat);
     mesh_.UpdateGeometry();
 }
 
 std::vector<PositionPair> ConvertLandmarkToCoordinates(const CMesh& src, const slib::CSparseMatrix<double>& C, const CMesh& dst, const slib::CSparseMatrix<double>& D, float weight) {
     slib::CMatrix<double> coordinates;
-    slib::mesh::ConvertMeshToCoordinate(src, coordinates);
+    src.ConvertMeshToCoordinate(coordinates);
     auto src_lm = C.MultiplyTo('N', coordinates);
-    slib::mesh::ConvertMeshToCoordinate(dst, coordinates);
+    dst.ConvertMeshToCoordinate(coordinates);
     auto dst_lm = D.MultiplyTo('N', coordinates);
     int ncors = src_lm.num_rows();
     if (ncors != dst_lm.num_rows()) {
@@ -566,23 +635,23 @@ MHBMLIB_API slib::CMatrix<float, 4, 4> EstimateAffine(
         case TRANSFORMATION::TRANSLATION: {
             // cur = src+t
             // dst <-> cur+t'
-            slib::CVector<float, 3> t;
+            slib::CVector<double, 3> t;
             residual = SolveSimilarity(corpos, 0, 0, &t);
             rigid = make_translation_matrix(t) * rigid;
             cur_mesh.vertices = src_mesh.vertices;
-            slib::mesh::AffineTransform(cur_mesh, rigid);
+            cur_mesh.AffineTransform(rigid);
         }
         break;
         case TRANSFORMATION::RIGID: {
             // cur = [Rt]src
             // dst <-> {Rt}cur
-            slib::CMatrix<float, 3, 3> R;
-            slib::CVector<float, 3> t;
+            slib::CMatrix<double, 3, 3> R;
+            slib::CVector<double, 3> t;
             residual = SolveSimilarity(corpos, 0, &R, &t);
             rigid =  make_affine_matrix(R, t) * rigid;
             slib::NormalizeRotation(rigid);
             cur_mesh.vertices = src_mesh.vertices;
-            slib::mesh::AffineTransform(cur_mesh, rigid);
+            cur_mesh.AffineTransform(rigid);
         }
         break;
         case TRANSFORMATION::SIMILARITY: {
@@ -594,15 +663,15 @@ MHBMLIB_API slib::CMatrix<float, 4, 4> EstimateAffine(
                 c.src =  AffineTransform(invRt, c.src);
                 c.dst =  AffineTransform(invRt, c.dst);
             }
-            float s;
-            slib::CMatrix<float, 3, 3> R;
-            slib::CVector<float, 3> t;
+            double s;
+            slib::CMatrix<double, 3, 3> R;
+            slib::CVector<double, 3> t;
             residual = SolveSimilarity(corpos, &s, &R, &t);
             scale *= s;
             rigid *=  make_affine_matrix(R, t);
             slib::NormalizeRotation(rigid);
             cur_mesh.vertices = src_mesh.vertices;
-            slib::mesh::AffineTransform(cur_mesh, rigid * slib::make_diagonal_matrix(scale, scale, scale, 1));
+            cur_mesh.AffineTransform(rigid * slib::make_diagonal_matrix(scale, scale, scale, 1));
             cur_mesh.UpdateGeometry();
         }
         break;
@@ -634,13 +703,13 @@ void DeformableMesh::SubdivideCorrespondence() {
 void DeformableMesh::SubdivideApproximatingSubdivision() {
     // subdivide original
     CMesh org_mesh = mesh();
-    slib::mesh::ConvertCoordinateToMesh(org_pos(), org_mesh);
-    org_mesh = slib::mesh::SubdivideLoop(org_mesh);
-    slib::mesh::ConvertMeshToCoordinate(org_mesh, org_pos_);
+    org_mesh.ConvertCoordinateToMesh(org_pos());
+    org_mesh = org_mesh.SubdivideLoop();
+    org_mesh.ConvertMeshToCoordinate(org_pos_);
 
     // subdivide current
     int noldvertices = mesh().vertices.size();
-    mesh_ = slib::mesh::SubdivideLoop(mesh());
+    mesh_ = mesh().SubdivideLoop();
 
     // update elasticity
     auto vertices = vertex_range();
@@ -672,13 +741,13 @@ void DeformableMesh::SubdivideApproximatingSubdivision() {
 void DeformableMesh::SubdivideInterpolatingSubdivision() {
     // subdivide original
     CMesh org_mesh = mesh();
-    slib::mesh::ConvertCoordinateToMesh(org_pos(), org_mesh);
-    org_mesh = slib::mesh::SubdivideModifiedButterfly(org_mesh);
-    slib::mesh::ConvertMeshToCoordinate(org_mesh, org_pos_);
+    org_mesh.ConvertCoordinateToMesh(org_pos());
+    org_mesh = org_mesh.SubdivideModifiedButterfly();
+    org_mesh.ConvertMeshToCoordinate(org_pos_);
 
     // subdivide current
     int noldvertices = mesh().vertices.size();
-    mesh_ = slib::mesh::SubdivideModifiedButterfly(mesh());
+    mesh_ = mesh().SubdivideModifiedButterfly();
 
     // update elasticity
     auto vertices = vertex_range();
@@ -707,6 +776,26 @@ void DeformableMesh::SubdivideInterpolatingSubdivision() {
     }
 }
 
+/// affine transform 3D coordinate matrix
+/**
+@verbatim
+[x,y,z] = [R(x,y,z)+(tx,ty,tz)]
+[  :  ]   [        :          ]
+@endverbatim
+*/
+void AffineTransformCoordinateMatrix(
+    const slib::CMatrix<double, 4, 4>& trans, // affine transformation
+    slib::CMatrix<double >& coordinates // mx3 coordinate matrix
+    ) {
+    const int nrows = coordinates.num_rows();
+    for (int r = 0; r < nrows; r++) {
+        auto p = AffineTransform(trans, make_vector_from_row(coordinates, r));
+        for (int c = 0; c < 3; c++) {
+            coordinates(r, c) = p[c];
+        }
+    }
+}
+
 void TransformOrg(const CMesh& mesh, slib::CMatrix<double>& org) {
     std::vector<PositionPair> pair(mesh.vertices.size());
     for (int vid = 0; vid < mesh.vertices.size(); vid++) {
@@ -714,9 +803,9 @@ void TransformOrg(const CMesh& mesh, slib::CMatrix<double>& org) {
         pair[vid].dst = mesh.vertices[vid].position;
         pair[vid].weight = 1;
     }
-    float scale;
-    slib::CMatrix<float, 3, 3> rot;
-    slib::CVector<float, 3> trans;
+    double scale;
+    slib::CMatrix<double, 3, 3> rot;
+    slib::CVector<double, 3> trans;
     SolveSimilarity(pair,
                     &scale,
                     &rot,
@@ -741,13 +830,13 @@ MHBMLIB_API slib::CMatrix<double> DeformNonrigid(
     SEARCH_DIRECTION direction
 ) {
     // laplacian
-    auto L = GenerateLaplacianMatrix(src_mesh, src_org/*, rigidness_weight*/);
+    auto L = src_mesh.GenerateLaplacianMatrix(src_org/*, rigidness_weight*/);
 
     // current working mesh
     auto cur_mesh = src_mesh;
     slib::CMatrix<double> cur_pos, dst_pos;
-    slib::mesh::ConvertMeshToCoordinate(src_mesh, cur_pos);
-    slib::mesh::ConvertMeshToCoordinate(dst_mesh, dst_pos);
+    src_mesh.ConvertMeshToCoordinate(cur_pos);
+    dst_mesh.ConvertMeshToCoordinate(dst_pos);
     if (point_plane_distance) {
         dst_pos = VectorizeCoordinates(dst_pos);
     }
@@ -817,7 +906,7 @@ MHBMLIB_API slib::CMatrix<double> DeformNonrigid(
         }
 
         std::clog << "|r| = " << sqrt(residual) << ", #pairs = " << mat.C.num_rows() << std::endl;
-        slib::mesh::ConvertCoordinateToMesh(cur_pos, cur_mesh);
+        cur_mesh.ConvertCoordinateToMesh(cur_pos);
         cur_mesh.UpdateGeometry();
 
         if ((niters % MIN_ICP_ITERATIONS) == 0) {

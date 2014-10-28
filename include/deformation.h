@@ -4,7 +4,7 @@
 #pragma once
 
 #include "constant.h"
-#include "mesh.h"
+#include "CMesh.h"
 #include "correspondence.h"
 
 namespace hbm {
@@ -40,7 +40,7 @@ public:
     /// replace vertices with those of a deformed mesh.
     template <typename T>
     void SetCoordinates(const slib::CMatrix<T>& pos) {
-        slib::mesh::ConvertCoordinateToMesh(pos, mesh_);
+        mesh_.ConvertCoordinateToMesh(pos);
         mesh_.UpdateGeometry();
     }
 

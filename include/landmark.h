@@ -4,7 +4,7 @@
 #pragma once
 
 #include "constant.h"
-#include "mesh.h"
+#include "CMesh.h"
 
 namespace hbm {
 

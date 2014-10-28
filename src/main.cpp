@@ -6,7 +6,7 @@
 #include "constant.h"
 #include "correspondence.h"
 #include "deformation.h"
-#include "mesh.h"
+#include "CMesh.h"
 #include "landmark.h"
 
 /// param file parser
@@ -87,7 +87,7 @@ public:
             // read
             str >> filename;
             //std::cout << "dump: " << filename << std::endl;
-            Write(deformable_.mesh(), filename);
+            deformable_.mesh(). Write(filename);
         }
         break;
         case 5:
@@ -268,24 +268,24 @@ private:
     /// import generic model file
     void LoadGenericShape(const std::string& filename) {
         hbm::CMesh generic;
-        Read(generic, filename);
+        generic.Read(filename);
         if (generic.faces.empty()) {
             ThrowRuntimeError("empty generic mesh");
         }
         std::vector<int> selected;
-        selected = SelectDuplicatedFaces(generic);
+        selected = generic.SelectDuplicatedFaces();
         if (!selected.empty()) {
             ThrowRuntimeError("generic mesh has duplicated face");
         }
-        selected = SelectNonManifoldVertices(generic);
+        selected = generic.SelectNonManifoldVertices();
         if (!selected.empty()) {
             ThrowRuntimeError("generic mesh has unorientable edge");
         }
-        selected = SelectCollapsedFaces(generic);
+        selected = generic.SelectCollapsedFaces();
         if (!selected.empty()) {
             ThrowRuntimeError("generic mesh has collapsed face");
         }
-        selected = SelectUnusedVertices(generic);
+        selected = generic.SelectUnusedVertices();
         if (!selected.empty()) {
             ThrowRuntimeError("generic mesh has unused vertex");
         }
@@ -294,28 +294,28 @@ private:
 
     /// import scan data file
     void LoadScanShape(const std::string& filename) {
-        Read(scan_mesh_, filename);
+        scan_mesh_.Read(filename);
         if (!scan_mesh_.faces.empty()) { // triangle mesh
             std::vector<int> selected;
-            selected = SelectDuplicatedFaces(scan_mesh_);
+            selected = scan_mesh_.SelectDuplicatedFaces();
             if (!selected.empty()) {
                 std::clog << "warning: scandata has duplicated faces." << std::endl;
-                DeleteFaces(scan_mesh_, selected);
+                scan_mesh_.DeleteFaces(selected);
             }
-            selected = SelectNonManifoldVertices(scan_mesh_);
+            selected = scan_mesh_.SelectNonManifoldVertices();
             if (!selected.empty()) {
                 std::clog << "warning: scandata has unorientable edges. " << std::endl;
-                DeleteFaces(scan_mesh_, selected);
+                scan_mesh_.DeleteFaces(selected);
             }
-            selected =  SelectCollapsedFaces(scan_mesh_);
+            selected = scan_mesh_.SelectCollapsedFaces();
             if (!selected.empty()) {
                 std::clog << "warning: scandata has collapsed faces. " << std::endl;
-                DeleteFaces(scan_mesh_, selected);
+                scan_mesh_.DeleteFaces(selected);
             }
-            selected = SelectUnusedVertices(scan_mesh_);
+            selected = scan_mesh_.SelectUnusedVertices();
             if (!selected.empty()) {
                 std::clog << "warning: scandata has unused vertex." << std::endl;
-                DeleteVertices(scan_mesh_, selected);
+                scan_mesh_.DeleteVertices(selected);
             }
             scan_mesh_.UpdateGeometry();
         } else { // point cloud
@@ -419,10 +419,10 @@ private:
         }
         if (deformable_.landmark().num_rows() == scan_landmark_.num_rows()) {
             int nlandmarks = deformable_.landmark().num_rows();
-            slib::CMatrix<float> g, s;
-            slib::mesh::ConvertMeshToCoordinate(deformable_.mesh(), g);
+            slib::CMatrix<double > g, s;
+            deformable_.mesh().ConvertMeshToCoordinate(g);
             g = deformable_.landmark().MultiplyTo('N', g);
-            slib::mesh::ConvertMeshToCoordinate(scan_mesh_, s);
+            scan_mesh_.ConvertMeshToCoordinate(s);
             s = scan_landmark_.MultiplyTo('N', s);
             g -= s;
             int worst_id;
@@ -443,7 +443,7 @@ private:
 
     /// export generic model shape
     void ExportModelShape(const std::string& filename) const {
-        Write(deformable_.mesh(), filename);
+        deformable_.mesh().Write(filename);
     }
 
     /// perform rigid registration

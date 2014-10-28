@@ -87,7 +87,7 @@ MHBMLIB_API void ExportLandmarkCoordinate(
         ThrowRuntimeError("no landmark");
     }
     slib::CMatrix<double> v;
-    slib::mesh::ConvertMeshToCoordinate(mesh, v);
+    mesh.ConvertMeshToCoordinate(v);
     v = landmarks.MultiplyTo('N', v);
     std::ofstream ofs(filename);
     for (int r = 0; r < v.num_rows(); r++) {
