@@ -14,32 +14,32 @@
 #include <functional>
 #include <vector>
 
-namespace slib {
+namespace hbm {
 
-// traits
-namespace kdt {
-template <typename Point>
-struct dimension {
-    // static const int value = ...;
-};
-template <typename Point>
-struct coordinate_type {
-    // typedef ... type;
-};
-template <typename Point, int D>
-struct access {
-    // static typename coordinate_type<Point>::type get(const Point& p) { return ...; }
-};
-}
+//// traits
+//namespace kdt {
+//template <typename Point>
+//struct dimension {
+//    // static const int value = ...;
+//};
+//template <typename Point>
+//struct coordinate_type {
+//    // typedef ... type;
+//};
+//template <typename Point, int D>
+//struct access {
+//    // static typename coordinate_type<Point>::type get(const Point& p) { return ...; }
+//};
+//}
 
 /// KD-tree
 /// coordinates are duplicated for acceleration.
-template <typename Point>
+//template <typename Point>
 class KdTree {
 public:
     static const int DEFAULT_BUCKET_SIZE = 16;
-    static const int DIMENSION = kdt::dimension<Point>::value;
-    typedef typename kdt::coordinate_type<Point>::type T;
+    static const int DIMENSION = /*kdt::dimension<CCustomVertex>::value*/3;
+    typedef /*typename kdt::coordinate_type<CCustomVertex>::type*/float T;
 
     KdTree() = default;
     KdTree(const KdTree&) = delete;
@@ -50,7 +50,10 @@ public:
         size_t ndata = std::distance(begin, end);
         data_.resize(ndata);
         for (size_t i = 0; i < ndata; i++, ++begin) {
-            CopyCoordinate < DIMENSION - 1 > (*begin, data_[i].pos);
+         //   CopyCoordinate < DIMENSION - 1 > (*begin, data_[i].pos);
+            data_[i].pos[0] = begin->position[0];
+            data_[i].pos[1] = begin->position[1];
+            data_[i].pos[2] = begin->position[2];
             data_[i].id = i;
         }
         Reconstruct(bucket_size);
@@ -105,16 +108,16 @@ private:
         };
     };
 
-    template <int D>
-    void CopyCoordinate(const Point& point, T *pos) {
-        pos[D] = kdt::access<Point, D>::get(point);
-        CopyCoordinate < D - 1 > (point, pos);
-    }
+    //template <int D>
+    //void CopyCoordinate(const CCustomVertex& point, T *pos) {
+    //    pos[D] = kdt::access<CCustomVertex, D>::get(point);
+    //    CopyCoordinate < D - 1 > (point, pos);
+    //}
 
-    template <>
-    void CopyCoordinate<0>(const Point& point, T *pos) {
-        pos[0] = kdt::access<Point, 0>::get(point);
-    }
+    //template <>
+    //void CopyCoordinate<0>(const CCustomVertex& point, T *pos) {
+    //    pos[0] = kdt::access<CCustomVertex, 0>::get(point);
+    //}
 
     /// compute the smallest power of two larger than or equal to an integer.
     /// @see http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2

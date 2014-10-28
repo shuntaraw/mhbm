@@ -6,41 +6,41 @@
 #include "constant.h"
 #include "mesh.h"
 
-namespace slib {
-namespace kdt {
-    /// traits for class KdTree<hbm::CMesh::CVertex>
-    template <>
-struct dimension<hbm::CMesh::CVertex> {
-    static const int value = 3;
-};
-/// traits for class KdTree<hbm::CMesh::CVertex>
-template <>
-struct coordinate_type<hbm::CMesh::CVertex> {
-    typedef float type;
-};
-/// traits for class KdTree<hbm::CMesh::CVertex>
-template <>
-struct access<hbm::CMesh::CVertex, 0> {
-    static float get(const hbm::CMesh::CVertex& p) {
-        return p.position[0];
-    }
-};
-/// traits for class KdTree<hbm::CMesh::CVertex>
-template <>
-struct access<hbm::CMesh::CVertex, 1> {
-    static float get(const hbm::CMesh::CVertex& p) {
-        return p.position[1];
-    }
-};
-/// traits for class KdTree<hbm::CMesh::CVertex>
-template <>
-struct access<hbm::CMesh::CVertex, 2> {
-    static float get(const hbm::CMesh::CVertex& p) {
-        return p.position[2];
-    }
-};
-}
-}
+//namespace slib {
+//namespace kdt {
+//    /// traits for class KdTree<hbm::CMesh::CVertex>
+//    template <>
+//struct dimension<hbm::CMesh::CVertex> {
+//    static const int value = 3;
+//};
+///// traits for class KdTree<hbm::CMesh::CVertex>
+//template <>
+//struct coordinate_type<hbm::CMesh::CVertex> {
+//    typedef float type;
+//};
+///// traits for class KdTree<hbm::CMesh::CVertex>
+//template <>
+//struct access<hbm::CMesh::CVertex, 0> {
+//    static float get(const hbm::CMesh::CVertex& p) {
+//        return p.position[0];
+//    }
+//};
+///// traits for class KdTree<hbm::CMesh::CVertex>
+//template <>
+//struct access<hbm::CMesh::CVertex, 1> {
+//    static float get(const hbm::CMesh::CVertex& p) {
+//        return p.position[1];
+//    }
+//};
+///// traits for class KdTree<hbm::CMesh::CVertex>
+//template <>
+//struct access<hbm::CMesh::CVertex, 2> {
+//    static float get(const hbm::CMesh::CVertex& p) {
+//        return p.position[2];
+//    }
+//};
+//}
+//}
 
 namespace hbm {
 
@@ -295,7 +295,7 @@ private:
     float max_distance2_; ///< distance threshold
     float min_cosangle_; ///< angle threshold
     bool allow_border_; ///< if the correspondence to mesh boundaries is allowed
-    slib::KdTree<CMesh::CVertex> dst_kdtree_; ///< KD-tree for nearest point search. defined as mutable as it behave as a cache.
+     KdTree/*<CMesh::CVertex>*/ dst_kdtree_; ///< KD-tree for nearest point search. defined as mutable as it behave as a cache.
     slib::mesh::HalfedgeMesh dst_halfedge_; ///< half edge data structure for adjacent face traversal
 };
 
