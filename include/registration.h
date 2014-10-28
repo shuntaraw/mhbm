@@ -69,7 +69,7 @@ T SolveSimilarity(
     }
     CMatrix<double, 3, 3> U, Vt;
     CVector<double, 3> s;
-    LAPACKE_gesvd<T,3,3>(covar, U, s, Vt);
+    LAPACKE_gesvd<T, 3, 3>(covar, U, s, Vt);
     *rot = transpose_of(U * Vt);
     if (determinant_of(*rot) < 0) {
         *rot = transpose_of(U * make_diagonal_matrix(1., 1., -1.) * Vt);

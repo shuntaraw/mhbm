@@ -16,7 +16,7 @@ namespace hbm {
  :
 @endverbatim
 */
-    MHBMLIB_API void ImportLandmarkMap(
+MHBMLIB_API void ImportLandmarkMap(
     const std::string& filename, ///< file
     const CMesh& mesh, ///< source mesh
     const slib::CSparseMatrix<double>& matAllD, ///< mx3 matrix of target 3D coordinates

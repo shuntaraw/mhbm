@@ -198,7 +198,7 @@ public:
     }
 
     bool empty() const {
-        return num_rows()*num_cols()==0;
+        return num_rows() * num_cols() == 0;
     }
 
     /// copy elements from a pointer to elements

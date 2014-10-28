@@ -9,8 +9,8 @@
 
 namespace hbm {
 
-    /// deformable mesh
-    class MHBMLIB_API DeformableMesh {
+/// deformable mesh
+class MHBMLIB_API DeformableMesh {
 public:
     /// provide a range to mesh vertices which automatically updates related data structure after updating the coordinates.
     class VertexRange : public boost::iterator_range<std::vector<CMesh::CVertex>::iterator> {
@@ -100,7 +100,6 @@ MHBMLIB_API slib::CMatrix<double> DeformNonrigid(
     const slib::CMatrix<double>& src_org,
     float correspondence_weight, ///< weight of nearest-neighbor correspondence
     float landmark_weight, ///< weight of landmark correspondence
-    //float rigidness_weight,
     bool point_plane_distance, ///<   true if point-to-plane constraint is used, false if point-to-point.
     TRANSFORMATION deformation_model, ///<   local deformation model = { translation, rigidity, similarity }
     float max_distance2, ///< distance threshold

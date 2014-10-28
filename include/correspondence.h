@@ -7,48 +7,13 @@
 #include "CMesh.h"
 #include "KdTree.h"
 #include "Halfedge.h"
-//namespace slib {
-//namespace kdt {
-//    /// traits for class KdTree<hbm::CMesh::CVertex>
-//    template <>
-//struct dimension<hbm::CMesh::CVertex> {
-//    static const int value = 3;
-//};
-///// traits for class KdTree<hbm::CMesh::CVertex>
-//template <>
-//struct coordinate_type<hbm::CMesh::CVertex> {
-//    typedef float type;
-//};
-///// traits for class KdTree<hbm::CMesh::CVertex>
-//template <>
-//struct access<hbm::CMesh::CVertex, 0> {
-//    static float get(const hbm::CMesh::CVertex& p) {
-//        return p.position[0];
-//    }
-//};
-///// traits for class KdTree<hbm::CMesh::CVertex>
-//template <>
-//struct access<hbm::CMesh::CVertex, 1> {
-//    static float get(const hbm::CMesh::CVertex& p) {
-//        return p.position[1];
-//    }
-//};
-///// traits for class KdTree<hbm::CMesh::CVertex>
-//template <>
-//struct access<hbm::CMesh::CVertex, 2> {
-//    static float get(const hbm::CMesh::CVertex& p) {
-//        return p.position[2];
-//    }
-//};
-//}
-//}
 
 namespace hbm {
 
 /// for registration
 struct PositionPair {
-    slib::CVector<float, 3> src;///< source point 
-    slib::CVector<float, 3> dst;///< destination point 
+    slib::CVector<float, 3> src;///< source point
+    slib::CVector<float, 3> dst;///< destination point
     float weight;///< weight
 };
 
@@ -73,7 +38,7 @@ struct MeshCoordinate {
 
     /// interpolate coordinates
     slib::CVector<float, 3> get_position(const CMesh *mesh///< mesh
-        ) const {
+                                        ) const {
         auto& index = mesh->faces[fid].index;
         return
             (1 - t1 - t2) * mesh->vertices[index[0]].position +
@@ -83,7 +48,7 @@ struct MeshCoordinate {
 
     /// interpolate normals
     slib::CVector<float, 3> get_normal(const CMesh *mesh///<mesh
-        ) const {
+                                      ) const {
         auto& index = mesh->faces[fid].index;
         return
             normalized_of((1 - t1 - t2) * mesh->vertices[index[0]].normal +
@@ -93,8 +58,8 @@ struct MeshCoordinate {
 
     /// convert to coordinates
     void ToCoordinate(const hbm::CMesh *mesh,///<mesh
-        slib::CVector<float, 3>& pos///<point
-        ) const {
+                      slib::CVector<float, 3>& pos///<point
+                     ) const {
         if (is_vertex()) {
             pos = mesh->vertices[vid].position;
         } else {
@@ -104,10 +69,10 @@ struct MeshCoordinate {
 
     /// reformat to normal matrix
     void ToNormalMatrix(const hbm::CMesh *mesh, ///<mesh
-        const slib::CVector<float, 3>& normal, ///<normal
-        int row, ///< row
-        slib::MatrixGenerator<double>& gen///< matrix generator
-        ) const {
+                        const slib::CVector<float, 3>& normal, ///<normal
+                        int row, ///< row
+                        slib::MatrixGenerator<double>& gen///< matrix generator
+                       ) const {
         if (is_vertex()) {
             gen.Add(row, 3 * vid + 0, normal[0]);
             gen.Add(row, 3 * vid + 1, normal[1]);
@@ -128,9 +93,9 @@ struct MeshCoordinate {
 
     /// reformat to coordinate matrix
     void ToPositionMatrix(const hbm::CMesh *mesh, ///<mesh
-        int row, ///<row
-        slib::MatrixGenerator<double>& gen///< matrix generator
-        ) const {
+                          int row, ///<row
+                          slib::MatrixGenerator<double>& gen///< matrix generator
+                         ) const {
         if (is_vertex()) {
             gen.Add(row, vid, 1);
         } else {
@@ -154,7 +119,7 @@ struct MeshCoordinatePair {
 /// let 's' and 'd' be nx3 coordinate matrices of source and target meshes,
 /// then the correspondences between two meshes are given by 'WCs = WDs'.
 struct MatrixPair {
-        MatrixPair() = default;
+    MatrixPair() = default;
     MatrixPair(const MatrixPair&) = delete;
     MatrixPair& operator=(const MatrixPair&) = delete;
     MatrixPair(MatrixPair&&  p)
@@ -197,7 +162,7 @@ public:
         return *this;
     }
 
-    /// set mesh pointers 
+    /// set mesh pointers
     void SetMesh(const CMesh *src , const CMesh *dst) {
         src_mesh_ = src ;
         dst_mesh_ = dst ;
@@ -237,7 +202,7 @@ public:
         data_.insert(data_.end(), p.data_.begin(), p.data_.end());
     }
 
-    /// reformat to pairs of coordinate 
+    /// reformat to pairs of coordinate
     const std::vector<MeshCoordinatePair>& ToMeshCoordinatePair() const {
         return data_;
     }
@@ -296,14 +261,14 @@ private:
     float max_distance2_; ///< distance threshold
     float min_cosangle_; ///< angle threshold
     bool allow_border_; ///< if the correspondence to mesh boundaries is allowed
-     KdTree/*<CMesh::CVertex>*/ dst_kdtree_; ///< KD-tree for nearest point search. defined as mutable as it behave as a cache.
-     hbm::HalfedgeMesh dst_halfedge_; ///< half edge data structure for adjacent face traversal
+    KdTree/*<CMesh::CVertex>*/ dst_kdtree_; ///< KD-tree for nearest point search. defined as mutable as it behave as a cache.
+    hbm::HalfedgeMesh dst_halfedge_; ///< half edge data structure for adjacent face traversal
 };
 
 /// tags for search direction
 enum class SEARCH_DIRECTION {
     FORWARD,///< forward
-    BACKWARD,///< backward 
+    BACKWARD,///< backward
     BIDIRECTIONAL,///< bidirectional
 };
 
@@ -317,7 +282,7 @@ public:
                        float min_cosangle,///< min cosine of normal angle
                        bool allow_border,///< wheather correspondence to boarder is allowed
                        SEARCH_DIRECTION direction ///< direction of corresondence search
-                       );
+                      );
 
     /// find correspondences for point-plane correspondence. this may be called in many times in the ICP loop.
     MeshCorrespondence Find() const;

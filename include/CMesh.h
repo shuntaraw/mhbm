@@ -18,8 +18,7 @@ struct CCustomVertex :
 };
 
 /// face of a mesh
-struct CCustomFace :
-    public slib::mesh::CTriangleIndex {};
+typedef   slib::mesh::CTriangleIndex  CCustomFace;
 
 /// triangular mesh
 class CMesh : public slib::mesh::CPolygonMesh<CCustomVertex, CCustomFace> {
@@ -37,80 +36,25 @@ public:
     void UpdateGeometry();
 
     void Dump()const;
-    void Read(const std::string&filename);
-    void Write(const std::string&filename)const;
+    void Read(const std::string& filename);
+    void Write(const std::string& filename)const;
 
     /// compute a laplacian matrix to generate differential coordinate
     /// @return laplacian matrix
-    slib::CSparseMatrix<double> GenerateLaplacianMatrix( const slib::CMatrix<double>& org_pos)const;
-
-    void ConvertMeshToCoordinate( slib::CMatrix<double>& x )const ;
-    void ConvertCoordinateToMesh( const slib::CMatrix<double>& x);
-
+    slib::CSparseMatrix<double> GenerateLaplacianMatrix(const slib::CMatrix<double>& org_pos)const;
+    void ConvertMeshToCoordinate(slib::CMatrix<double>& x)const ;
+    void ConvertCoordinateToMesh(const slib::CMatrix<double>& x);
     void AffineTransform(const slib::CMatrix<float, 4, 4>& mat);
-
     std::vector<int> SelectDuplicatedFaces()const;
-    std::vector<int> SelectNonManifoldVertices( )const;
-    std::vector<int> SelectCollapsedFaces( )const;
+    std::vector<int> SelectNonManifoldVertices()const;
+    std::vector<int> SelectCollapsedFaces()const;
     std::vector<int> SelectUnusedVertices()const;
-    void DeleteVertices(
-        const std::vector<int>& vid_to_delete///< list of face ids.
-        );
-    void DeleteFaces(
-        const std::vector<int>& fid_to_delete ///< list of face ids.
-        ) ;
-
+    void DeleteVertices( const std::vector<int>& vid_to_delete );
+    void DeleteFaces( const std::vector<int>& fid_to_delete ) ;
     CMesh SubdivideModifiedButterfly() const;
     CMesh SubdivideLoop() const;
 };
 
 
-///// affine transform 3D coordinate matrix
-///**
-//@verbatim
-//[x,y,z] = [R(x,y,z)+(tx,ty,tz)]
-//[  :  ]   [        :          ]
-//@endverbatim
-//*/
-//void AffineTransformCoordinateMatrix(
-//    const slib::CMatrix<double, 4, 4>& trans, // affine transformation
-//    slib::CMatrix<double>& coordinates // mx3 coordinate matrix
-//    );
-
-///// reorder 3D coordinate matrix from mx3 to 3mx1
-///**
-//@verbatim
-//[x y z] -> [x]
-//[: : :]    [y]
-//[     ]    [z]
-//[     ]    [:]
-//@endverbatim
-//*/
-///// @return 3mx1 coordinate matrix
-//slib::CMatrix<double> VectorizeCoordinates(const slib::CMatrix<double>& mat);
-
-///// reorder 3D coordinate matrix from mx3 to 3mx1
-///**
-//@verbatim
-//[x] -> [x y z]
-//[y]    [  :  ]
-//[z]
-//[:]
-//@endverbatim
-//*/
-///// @return 3mx1 coordinate matrix
-//slib::CMatrix<double> StackCoordinates(const slib::CMatrix<double>& mat);
-
-///// expand a matrix from nxn to 3nx3n block diagonal
-///**
-//@verbatim
-//[e  ]   [e   ]
-//[ \ ] = [ e  ]
-//[   ]   [  e ]
-//[   \]
-//@endverbatim
-//*/
-///// @return 3nx3n block diagonal matrix
-//slib::CSparseMatrix<double> ExpandLaplacianMatrix(const slib::CSparseMatrix<double>& mat);
 
 }// namespace hbm

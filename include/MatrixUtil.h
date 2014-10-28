@@ -81,10 +81,10 @@ T dot(
 template <typename T>
 inline
 CVector<T, 3> cross(const CVector<T, 3>& v1, const CVector<T, 3>& v2) {
-    return CVector < T, 3 > {
-        v1(1, 0) * v2(2, 0) - v1(2, 0) * v2(1, 0),
-            v1(2, 0) * v2(0, 0) - v1(0, 0) * v2(2, 0),
-            v1(0, 0) * v2(1, 0) - v1(1, 0) * v2(0, 0)
+    return CVector <T, 3> {
+        v1(1, 0) *v2(2, 0) - v1(2, 0) *v2(1, 0),
+        v1(2, 0) *v2(0, 0) - v1(0, 0) *v2(2, 0),
+        v1(0, 0) *v2(1, 0) - v1(1, 0) *v2(0, 0)
     };
 }
 
@@ -298,7 +298,7 @@ CMatrix<T, 4, 4> inverse_rigidity_of(const CMatrix<T, 4, 4>& a) {
                                a(0, 1), a(1, 1), a(2, 1), 0,
                                a(0, 2), a(1, 2), a(2, 2), 0,
                                0, 0, 0, 1);
-    auto Rt = AffineTransform(inv, CVector < T, 3 > { a(0, 3), a(1, 3), a(2, 3)});
+    auto Rt = AffineTransform(inv, CVector <T, 3> { a(0, 3), a(1, 3), a(2, 3)});
     inv(0, 3) = -Rt[0];
     inv(1, 3) = -Rt[1];
     inv(2, 3) = -Rt[2];
@@ -526,8 +526,8 @@ CMatrix<T, 4, 4> make_rotation_matrix(const CVector<T, 3>& src, const CVector<T,
 /// @tparam T element
 inline
 CMatrix<float, 4, 4> make_rotation_matrix_from_mouse_drag(float rx, float ry, float dx, float dy) {
-    CVector<float, 3> v1 = normalized_of<float, 3, 1>(CVector < float, 3 > {rx, ry, 1.f});
-    CVector<float, 3> v2 = normalized_of<float, 3, 1>(CVector < float, 3 > {rx + dx, ry + dy, 1.f});
+    CVector<float, 3> v1 = normalized_of<float, 3, 1>(CVector <float, 3> {rx, ry, 1.f});
+    CVector<float, 3> v2 = normalized_of<float, 3, 1>(CVector <float, 3> {rx + dx, ry + dy, 1.f});
     CVector<float, 3> cr = cross(v1, v2);
     return make_rotation_matrix(cr, dot(v1, v2), norm2_of(cr));
 }
@@ -597,10 +597,10 @@ CMatrix<decltype(T1()*T2()), 3, 1> AffineTransform(
     if (mat.num_rows() == 4) {
         z = mat(3, 0) * vec[0] + mat(3, 1) * vec[1] + mat(3, 2) * vec[2] + mat(3, 3);
     }
-    return CVector < decltype(T1()*T2()), 3 > {
+    return CVector <decltype(T1()*T2()), 3> {
         (mat(0, 0) * vec[0] + mat(0, 1) * vec[1] + mat(0, 2) * vec[2] + mat(0, 3)) / z,
-            (mat(1, 0) * vec[0] + mat(1, 1) * vec[1] + mat(1, 2) * vec[2] + mat(1, 3)) / z,
-            (mat(2, 0) * vec[0] + mat(2, 1) * vec[1] + mat(2, 2) * vec[2] + mat(2, 3)) / z
+        (mat(1, 0) * vec[0] + mat(1, 1) * vec[1] + mat(1, 2) * vec[2] + mat(1, 3)) / z,
+        (mat(2, 0) * vec[0] + mat(2, 1) * vec[1] + mat(2, 2) * vec[2] + mat(2, 3)) / z
     };
 }
 

@@ -8,63 +8,13 @@
 #include "deformation.h"
 #include "landmark.h"
 
+template <typename T>
+T clamp(T value, T low, T high) {
+    return (value < low) ? low : (value > high ? high : value);
+}
+
 namespace hbm {
 
-#if 0
-/// compute rotation matrix from a covariance
-/// @return maximized rRr
-template <typename T>
-double SolveRotationQuaternion(
-    const slib::CMatrix<T, 3, 3>& cov,// sum_rTr
-    slib::CMatrix<T, 3, 3>& rot // rotation
-) {
-    double a[] = {
-        cov(0, 0) + cov(1, 1) + cov(2, 2),
-        cov(1, 2) - cov(2, 1),
-        cov(2, 0) - cov(0, 2),
-        cov(0, 1) - cov(1, 0),
-        cov(1, 2) - cov(2, 1),
-        cov(0, 0) - cov(1, 1) - cov(2, 2),
-        cov(0, 1) + cov(1, 0),
-        cov(2, 0) + cov(0, 2),
-        cov(2, 0) - cov(0, 2),
-        cov(0, 1) + cov(1, 0),
-        -cov(0, 0) + cov(1, 1) - cov(2, 2),
-        cov(1, 2) + cov(2, 1),
-        cov(0, 1) - cov(1, 0),
-        cov(2, 0) + cov(0, 2),
-        cov(1, 2) + cov(2, 1),
-        -cov(0, 0) - cov(1, 1) + cov(2, 2),
-    };
-
-    // solve eigenvectors
-    const char jobz = 'V'; // eigenvalues and eigenvectors are computed
-    const char uplo = 'U'; // upper triangular
-    const int n = 4;
-    const int lda = 4;
-    double w[4];
-    double work[11]; // 3n-1
-    const int lwork = 11;
-    int info;
-    DSYEV(&jobz, &uplo, &n, a, &lda, w, work, &lwork, &info);
-
-    // convert quaternion to matrix
-    double *q = a + 12; // last column
-    rot = {
-        q[0] *q[0] + q[1] *q[1] - q[2] *q[2] - q[3] *q[3],
-        (q[1] * q[2] + q[0] * q[3]) * 2,
-        (q[1] * q[3] - q[0] * q[2]) * 2,
-        (q[1] * q[2] - q[0] * q[3]) * 2,
-        q[0] *q[0] - q[1] *q[1] + q[2] *q[2] - q[3] *q[3],
-        (q[2] * q[3] + q[0] * q[1]) * 2,
-        (q[1] * q[3] + q[0] * q[2]) * 2,
-        (q[2] * q[3] - q[0] * q[1]) * 2,
-        q[0] *q[0] - q[1] *q[1] - q[2] *q[2] + q[3] *q[3],
-    };
-
-    return w[3]; // last element
-}
-#endif
 
 /// compute rotation matrix from a covariance
 /// @return maximized rRr
@@ -95,25 +45,6 @@ double SolveRotationSVD(
     return s[0] + s[1] + s[2];
 }
 
-#if 0
-float SolveRotationSVD(
-    const slib::CMatrix<float, 3, 3>& covar,// sum_rTr
-    slib::CMatrix<float, 3, 3>& rot // rotation
-) {
-    slib::CMatrix<float, 3, 3> u, vt;
-    slib::CVector<float, 3> s;
-    slib::svd3(covar.data(), u.data(), s.data(), vt.data());
-    rot = transpose_of(u * vt);
-    float det = determinant_of(rot);
-    if (det < 0) {
-        u[6] *= -1;
-        u[7] *= -1;
-        u[8] *= -1;
-        rot = transpose_of(u * vt);
-    }
-    return s[0] + s[1] + s[2];
-}
-#endif
 
 /// solve similarity from point correspondences.
 /// dst = s.R.src + t:
@@ -168,7 +99,6 @@ double SolveSimilarity(
     }
 
     slib::CMatrix<double, 3, 3> drot;
-//    double consistency = SolveRotationQuaternion(covar, drot);
     double consistency = SolveRotationSVD(covar, drot);
     *rot = drot;
     if (scale) {
@@ -245,7 +175,7 @@ slib::CMatrix<double> CalculateDifferentialCoordinate(
         // solve scale
         if (allow_scaling) {
             double scale = sqrt(newsum2 / orgsum2);
-            scale = slib::clamp<double> (scale, MIN_SIMILARITY_SCALE , MAX_SIMILARITY_SCALE);
+            scale =  clamp<double> (scale, MIN_SIMILARITY_SCALE , MAX_SIMILARITY_SCALE);
             rotation[r] *= scale;
         }
     }
@@ -785,8 +715,8 @@ void DeformableMesh::SubdivideInterpolatingSubdivision() {
 */
 void AffineTransformCoordinateMatrix(
     const slib::CMatrix<double, 4, 4>& trans, // affine transformation
-    slib::CMatrix<double >& coordinates // mx3 coordinate matrix
-    ) {
+    slib::CMatrix<double>& coordinates // mx3 coordinate matrix
+) {
     const int nrows = coordinates.num_rows();
     for (int r = 0; r < nrows; r++) {
         auto p = AffineTransform(trans, make_vector_from_row(coordinates, r));

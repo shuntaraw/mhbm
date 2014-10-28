@@ -329,7 +329,7 @@ void NormalizeRotation(CMatrix<T, NRows, NRows>& mat) {
     }
     CMatrix<T, 3, 3> U, Vt;
     CVector<T, 3> W;
-    LAPACKE_gesvd<T,3,3>(R, U, W, Vt);
+    LAPACKE_gesvd<T, 3, 3>(R, U, W, Vt);
     R = U * Vt;
     for (int c = 0; c < 3; c++) {
         for (int r = 0; r < 3; r++) {

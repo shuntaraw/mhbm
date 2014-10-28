@@ -83,7 +83,7 @@ public:
         case 4:  {
             static int dumpid = 0; // HACK: to define a local variable
             std::string filename = output_filename_;
-            filename.insert(filename.find_last_of('.'), slib::string_format("-dump-%05d", dumpid++)); // default
+            filename.insert(filename.find_last_of('.'), "-dump-" + std::to_string(dumpid++));    // default
             // read
             str >> filename;
             //std::cout << "dump: " << filename << std::endl;
@@ -320,7 +320,7 @@ private:
             scan_mesh_.UpdateGeometry();
         } else { // point cloud
             for (auto& v : scan_mesh_.vertices) {
-                v.normal = slib::CVector < float, 3 > {1, 0, 0}; // dummy non-zero vector
+                v.normal = slib::CVector <float, 3> {1, 0, 0}; // dummy non-zero vector
             }
         }
     }
@@ -419,7 +419,7 @@ private:
         }
         if (deformable_.landmark().num_rows() == scan_landmark_.num_rows()) {
             int nlandmarks = deformable_.landmark().num_rows();
-            slib::CMatrix<double > g, s;
+            slib::CMatrix<double> g, s;
             deformable_.mesh().ConvertMeshToCoordinate(g);
             g = deformable_.landmark().MultiplyTo('N', g);
             scan_mesh_.ConvertMeshToCoordinate(s);
@@ -524,15 +524,15 @@ private:
         break;
         case 'x':
             std::cout << "rotation around x axis" << std::endl;
-            deformable_.ApplyTransformation(slib::make_rotation_matrix(slib::CVector < float, 3 > {1, 0, 0}, float(M_PI / 2)));
+            deformable_.ApplyTransformation(slib::make_rotation_matrix(slib::CVector <float, 3> {1, 0, 0}, float(M_PI / 2)));
             break;
         case 'y':
             std::cout << "rotation around y axis" << std::endl;
-            deformable_.ApplyTransformation(slib::make_rotation_matrix(slib::CVector < float, 3 > {0, 1, 0}, float(M_PI / 2)));
+            deformable_.ApplyTransformation(slib::make_rotation_matrix(slib::CVector <float, 3> {0, 1, 0}, float(M_PI / 2)));
             break;
         case 'z':
             std::cout << "rotation around z axis" << std::endl;
-            deformable_.ApplyTransformation(slib::make_rotation_matrix(slib::CVector < float, 3 > {0, 0, 1}, float(M_PI / 2)));
+            deformable_.ApplyTransformation(slib::make_rotation_matrix(slib::CVector <float, 3> {0, 0, 1}, float(M_PI / 2)));
             break;
         default:
             ThrowLogicError("undefined label");

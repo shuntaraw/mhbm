@@ -11,7 +11,7 @@
 /// classes and functions for non-rigid mesh registration
 namespace hbm {
 
-    MHBMLIB_API void ImportLandmarkMap(
+MHBMLIB_API void ImportLandmarkMap(
     const std::string& filename,
     const CMesh& mesh,
     const slib::CSparseMatrix<double>& matAllD,

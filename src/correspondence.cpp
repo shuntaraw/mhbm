@@ -5,6 +5,11 @@
 
 #include "correspondence.h"
 
+template <typename T>
+T clamp(T value, T low, T high) {
+    return (value < low) ? low : (value > high ? high : value);
+}
+
 namespace hbm {
 
 /// calculate Tukey's biweight function.
@@ -55,31 +60,31 @@ void FindNearestPointToTriangle(const slib::CVector<float, 3>& query, // 3D coor
             if (c == 0) {
                 t = 0;
             } else {
-                t = slib::clamp(-e / c, 0.f, 1.f);
+                t =  clamp(-e / c, 0.f, 1.f);
             }
         } else if (c == 0) { // p02---p1 (|E1|=0)
             t = 0;
             // Q(s,t)=ass+2ds+f
             // Q'(s,t)=0 when s=-d/a    (a!=0)
-            s = slib::clamp(-d / a, 0.f, 1.f);
+            s = clamp(-d / a, 0.f, 1.f);
         } else if (b > 0) {
             if (a > c) { // p0---p2---p1
                 t = 0;
                 // Q(s)=ass+2ds+f
                 // Q'(s)/2=0 when s=-d/a    (a!=0)
-                s = slib::clamp(-d / a, 0.f, 1.f);
+                s = clamp(-d / a, 0.f, 1.f);
             } else { // p0---p1---p2
                 s = 0;
                 // Q(s,t)=ctt+2et+f
                 // Q'(s,t)=0 when t=-e/c    (c!=0)
-                t = slib::clamp(-e / c, 0.f, 1.f);
+                t = clamp(-e / c, 0.f, 1.f);
             }
         } else { // p1---p0---p2
             // Q(s)=ass+2b(1-s)s+c(1-s)(1-s)+2ds+2e(1-s)+f
             // Q'(s)/2=as+b-2bs-c(1-s)+d-e
             //        =(a-2b+c)s+(b-c+d-e)
             //        =0 when s=-(b-c+d-e)/(a-2b+c)    (a-2b+c!=0)
-            s = slib::clamp((c + e - b - d) / (a + c - 2 * b), 0.f, 1.f);
+            s = clamp((c + e - b - d) / (a + c - 2 * b), 0.f, 1.f);
             t = 1 - s;
         }
     } else {

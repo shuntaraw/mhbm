@@ -17,8 +17,8 @@ namespace hbm {
 /// coordinates are duplicated for acceleration.
 class KdTree {
 public:
-    static const int DEFAULT_BUCKET_SIZE =15 ;
-    static const int DIMENSION  =3;
+    static const int DEFAULT_BUCKET_SIZE = 15 ;
+    static const int DIMENSION  = 3;
 
     KdTree() = default;
     KdTree(const KdTree&) = delete;
@@ -32,11 +32,11 @@ public:
     /// k-nearest-neighbor search
     /// @return true if found, otherwise false
     bool GetKNearest(const float *query, // query coordinates
-        float max_distance2, // upper bound of squared distance
-        int k,
-        size_t *indices, // index of the nearest neighbor
-        float *distance2s // squared distance to the nearest neighbor; distance2 < max_distance2 if found.
-        ) const;
+                     float max_distance2, // upper bound of squared distance
+                     int k,
+                     size_t *indices, // index of the nearest neighbor
+                     float *distance2s // squared distance to the nearest neighbor; distance2 < max_distance2 if found.
+                    ) const;
 
 private:
     // element in sorted array
@@ -71,11 +71,11 @@ private:
 
     /// search for the data at the nearest position
     void SearchForKNearest(const Node *node,
-        const float *query, // query coordinates
-        int k,
-        size_t *indices, // iterator to the nearest neighbor
-        float *distance2s // squared distance to the nearest neighbor
-        ) const;
+                           const float *query, // query coordinates
+                           int k,
+                           size_t *indices, // iterator to the nearest neighbor
+                           float *distance2s // squared distance to the nearest neighbor
+                          ) const;
 
 private:
     std::vector<Node> nodes_; // nodes of KD-tree
