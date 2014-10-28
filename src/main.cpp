@@ -58,7 +58,7 @@ public:
             float correspondence_weight = 1;
             float shape_weight = 1;
             float landmark_weight = 0;
-            char model = 'r';
+            char model = 't';
             char direction = 'f';
             char point2point = 'p';
             float max_distance = 100;
@@ -564,15 +564,15 @@ private:
         switch (model) {
         case 't':
             deformation_model = hbm::TRANSFORMATION::TRANSLATION;
-            std::cout << "+ local translation model" << std::endl;
+            std::cout << "+ local translation" << std::endl;
             break;
         case 'r':
             deformation_model = hbm::TRANSFORMATION::RIGID;
-            std::cout << "+ local rigid model" << std::endl;
+            std::cout << "+ as-rigid-as-possible" << std::endl;
             break;
         case 's':
             deformation_model = hbm::TRANSFORMATION::SIMILARITY;
-            std::cout << "+ local similarity model" << std::endl;
+            std::cout << "+ as-conformal-as-possible" << std::endl;
             break;
         default:
             ThrowLogicError("undefined model");

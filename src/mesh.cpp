@@ -47,9 +47,10 @@ void CMesh::Write(const std::string& filename)const {
 /// @return laplacian matrix
 slib::CSparseMatrix<double> CMesh::GenerateLaplacianMatrix(const slib::CMatrix<double>& org_pos)const {
     CMesh work(*this);
-    slib::mesh::ConvertCoordinateToMesh(org_pos, work);
+    work.ConvertCoordinateToMesh(org_pos );
     slib::CSparseMatrix<double> L;
-    slib::mesh::GetMeanCurvatureNormalLaplacian(work, L, true);
+    slib::mesh::GetMeanCurvatureNormalLaplacian(work, L ,false );
+//    slib::mesh::GetMeanValueCoordinateLaplacian(work, L );
     return L;
 }
 

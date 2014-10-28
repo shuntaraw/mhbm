@@ -788,8 +788,8 @@ MHBMLIB_API slib::CMatrix<double> DeformNonrigid(
             mat.C = *landmarkC;
             mat.D = *landmarkD;
         }
-        mat.C.Scale(sqrt(landmark_weight));
-        mat.D.Scale(sqrt(landmark_weight));
+        mat.C.Scale(/**/sqrt/**/(landmark_weight));
+        mat.D.Scale(/**/sqrt/**/(landmark_weight));
     } else {
         ThrowRuntimeError("invalid parameter");
     }
@@ -806,16 +806,16 @@ MHBMLIB_API slib::CMatrix<double> DeformNonrigid(
             }
             mat.C = mat.W.MultiplyTo('N', mat.C);
             mat.D = mat.W.MultiplyTo('N', mat.D);
-            mat.C.Scale(sqrt(correspondence_weight));
-            mat.D.Scale(sqrt(correspondence_weight));
+            mat.C.Scale(/**/sqrt/**/(correspondence_weight));
+            mat.D.Scale(/**/sqrt/**/(correspondence_weight));
 
             if (landmark_weight && landmarkC && landmarkD) {
                 if (point_plane_distance) {
-                    mat.C.AppendRows(sqrt(landmark_weight), ExpandLaplacianMatrix(*landmarkC));
-                    mat.D.AppendRows(sqrt(landmark_weight), ExpandLaplacianMatrix(*landmarkD));
+                    mat.C.AppendRows(/**/sqrt/**/(landmark_weight), ExpandLaplacianMatrix(*landmarkC));
+                    mat.D.AppendRows(/**/sqrt/**/(landmark_weight), ExpandLaplacianMatrix(*landmarkD));
                 } else {
-                    mat.C.AppendRows(sqrt(landmark_weight), *landmarkC);
-                    mat.D.AppendRows(sqrt(landmark_weight), *landmarkD);
+                    mat.C.AppendRows(/**/sqrt/**/(landmark_weight), *landmarkC);
+                    mat.D.AppendRows(/**/sqrt/**/(landmark_weight), *landmarkD);
                 }
             }
         }
