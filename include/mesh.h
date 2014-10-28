@@ -18,10 +18,10 @@ struct CCustomVertex :
 };
 
 /// face of a mesh
-typedef   slib::mesh::CTriangleIndex  CCustomFace;
+typedef slib::mesh::CTriangleIndex  CCustomFace;
 
 /// triangular mesh
-class CMesh : public slib::mesh::CPolygonMesh<CCustomVertex, CCustomFace> {
+class MHBMLIB_API CMesh : public slib::mesh::CPolygonMesh<CCustomVertex, CCustomFace> {
 public:
     CMesh() = default;
     CMesh(const CMesh&) = default;

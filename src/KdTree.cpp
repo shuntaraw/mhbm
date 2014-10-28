@@ -7,7 +7,7 @@
 // "An Algorithm for Finding Best Matches in Logarithmic Expected Time"
 // ACM Transactions on Mathematical Software, VOL.3, No.3, pp.209-226, 1977
 
-#include "precompile.h"
+#include "constant.h"
 
 #include "KdTree.h"
 

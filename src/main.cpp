@@ -1,12 +1,14 @@
 // Copyright (c) 2012-2014 Shuntaro Yamazaki (shun-yamazaki (at) aist.go.jp)
 // and the National Institute of Advanced Industrial Science and Technology
 
-#include "precompile.h"
-
 #include "constant.h"
+
+#include <omp.h> // omp_set_num_threads()
+#include <boost/filesystem.hpp>
+
 #include "correspondence.h"
 #include "deformation.h"
-#include "CMesh.h"
+#include "mesh.h"
 #include "landmark.h"
 
 /// param file parser

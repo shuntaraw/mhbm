@@ -1,12 +1,12 @@
 // Copyright (c) 2012-2014 Shuntaro Yamazaki (shun-yamazaki (at) aist.go.jp)
 // and the National Institute of Advanced Industrial Science and Technology
 
-#include "precompile.h"
+#include "constant.h"
 
 #include "MeshFile.h"
 #include "MeshUtil.h"
 #include "MeshLaplacian.h"
-#include "CMesh.h"
+#include "mesh.h"
 #include "MeshSubdivision.h"
 
 namespace hbm {

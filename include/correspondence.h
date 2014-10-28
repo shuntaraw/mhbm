@@ -4,7 +4,8 @@
 #pragma once
 
 #include "constant.h"
-#include "CMesh.h"
+
+#include "mesh.h"
 #include "KdTree.h"
 #include "Halfedge.h"
 

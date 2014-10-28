@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "CMesh.h"
+#include "mesh.h"
 
 namespace hbm {
 
